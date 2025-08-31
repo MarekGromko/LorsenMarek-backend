@@ -1,16 +1,4 @@
-CREATE DATABASE if NOT EXISTS db_general;
-USE db_general;
-
-DROP TABLE if EXISTS tbl_person;
-CREATE TABLE tbl_person(
-id INT primary key AUTO_INCREMENT,
-first_name VARCHAR(100) NOT NULL,
-last_name VARCHAR(100) NOT NULL,
-email VARCHAR(150),
-gender VARCHAR(50)
-);
-
-INSERT INTO tbl_person(id,first_name,last_name,email,gender) VALUES
+INSERT INTO person(id,first_name,last_name,email,gender) VALUES
 (1, 'Finn', 'Schutt', 'fschutt0@dailymail.co.uk', 'Male'),
 (2, 'Martynne', 'Cauldfield', 'mcauldfield1@ebay.co.uk', 'Female'),
 (3, 'Torre', 'Caldecutt', 'tcaldecutt2@clickbank.net', 'Bigender'),
