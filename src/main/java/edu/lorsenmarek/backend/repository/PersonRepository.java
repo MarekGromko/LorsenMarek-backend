@@ -21,7 +21,7 @@ public class PersonRepository {
     }
     Optional<Person> findById(int index) {
         try {
-            return jdbc.query("SELECT * FROM tbl_person WHERE id = ?", personMapper, index).stream().findFirst();
+            return jdbc.query("SELECT * FROM person WHERE id = ?", personMapper, index).stream().findFirst();
         } catch (DataAccessException e) {
             return Optional.empty();
         }
