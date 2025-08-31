@@ -19,9 +19,9 @@ public class PersonRepository {
         this.jdbc = jdbc;
         this.personMapper = new PersonMapper();
     }
-    Optional<Person> findById(int index) {
+    Optional<Person> findById(int id) {
         try {
-            return jdbc.query("SELECT * FROM person WHERE id = ?", personMapper, index).stream().findFirst();
+            return jdbc.query("SELECT * FROM person WHERE id = ?", personMapper, id).stream().findFirst();
         } catch (DataAccessException e) {
             return Optional.empty();
         }
