@@ -4,9 +4,9 @@
 *.ipr
 *.iws
 out/
-target/ # For Maven projects
-build/ # For Gradle projects
-.gradle/ # For Gradle projects
+target/
+build/
+.gradle/
 
 # Compiled class files
 *.class
