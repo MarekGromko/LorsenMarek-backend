@@ -13,7 +13,6 @@ public class ResponseWrapper {
     public ResponseWrapper(HttpServletResponse response) {
         this.response = response;
     }
-
     public void initWriter() throws IOException {
         this.writer = response.getWriter();
     }
