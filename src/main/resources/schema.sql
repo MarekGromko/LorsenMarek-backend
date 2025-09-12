@@ -6,3 +6,13 @@ CREATE TABLE person(
     email VARCHAR(150),
     gender VARCHAR(50)
 );
+
+DROP TABLE if EXISTS tbl_series;
+CREATE TABLE tbl_series(
+id int primary key AUTO_INCREMENT,
+title VARCHAR(100) NOT NULL,
+genre VARCHAR(100) NOT NULL,
+nbEpisode  int NOT null,
+note int
+);
+
