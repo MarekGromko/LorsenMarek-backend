@@ -21,24 +21,24 @@ public class PersonRepository {
         this.jdbc = jdbc;
         this.personMapper = new PersonMapper();
     }
+
     public Optional<Person> findById(int id) {
         try {
             var params = new MapSqlParameterSource().addValue("id", id);
-            return jdbc.query("SELECT * FROM person WHERE id = ?", params,  personMapper).stream().findFirst();
+            return jdbc.query("SELECT * FROM person WHERE id = :id", params,  personMapper).stream().findFirst();
         } catch (DataAccessException e) {
             return Optional.empty();
         }
     }
     public List<Person> findAll(PageOptions pageOpts) {
-        List<Person> result;
-        var sql     = " SELECT * FROM person";
-        var params  = new MapSqlParameterSource();
-        if(pageOpts.getBaseId() != null) {
-            sql += " WHERE id >= :id";
-            params.addValue("id", pageOpts.getBaseId());
-        }
-        if (pageOpts.getPageSize() != null) {
-            sql += " LIMIT " + (pageOpts.getPageSize() + 1);
+        var sql = "";
+        var params = new MapSqlParameterSource();
+        if(pageOpts == null) {
+            sql = "SELECT * FROM person SORT BY id";
+        } else {
+            sql = "SELECT * FROM person SORT BY id LIMIT :limit OFFSET :offset";
+            params.addValue("limit", pageOpts.getPageSize());
+            params.addValue("offset", pageOpts.getPageSize() * pageOpts.getPageIndex());
         }
         try {
             return jdbc.query(sql, params, personMapper);
@@ -90,20 +90,18 @@ public class PersonRepository {
     public void deleteById(int id){
         try {
             var params = new MapSqlParameterSource().addValue("id", id);
-            jdbc.update("DELETE FROM person WHERE id = ?", params);
+            jdbc.update("DELETE FROM person WHERE id = :id", params);
         }catch (DataAccessException e){
             return;
         }
     }
     public List<Person> searchByName(String hint, PageOptions pageOpts) {
-        var sql     = "SELECT * FROM person WHERE INSTR(:hint, CONCAT(first_name, ' ', last_name)) > 0";
-        var params  = new MapSqlParameterSource().addValue("hint", hint);
-        if(pageOpts.getBaseId() != null) {
-            sql += " AND id >= :id";
-            params.addValue("id", pageOpts.getBaseId());
-        }
-        if(pageOpts.getPageSize() != null) {
-            sql += " LIMIT" + (pageOpts.getPageSize() + 1);
+        var sql = "SELECT * FROM person WHERE INSTR(:hint, CONCAT(first_name, ' ', last_name)) > 0 SORT BY id";
+        var params = new MapSqlParameterSource();
+        if(pageOpts != null) {
+            sql += " LIMIT :limit OFFSET :offset";
+            params.addValue("limit", pageOpts.getPageSize());
+            params.addValue("offset", pageOpts.getPageSize() * pageOpts.getPageIndex());
         }
         try {
             return jdbc.query(sql, params, personMapper);
