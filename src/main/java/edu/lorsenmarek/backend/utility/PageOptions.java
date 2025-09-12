@@ -9,14 +9,10 @@ import org.springframework.lang.Nullable;
 @Setter
 @Builder
 public class PageOptions {
-    private Integer baseId;
     private Integer pageSize;
-    PageOptions() {
-        baseId = null;
-        pageSize = null;
-    }
-    PageOptions(Integer baseId, Integer pageSize) {
-        this.baseId = baseId;
+    private Integer pageIndex;
+    PageOptions(Integer pageSize, Integer pageIndex) {
         this.pageSize = pageSize;
+        this.pageIndex = pageIndex;
     }
 }
