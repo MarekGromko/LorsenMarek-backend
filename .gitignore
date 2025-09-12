@@ -17,6 +17,7 @@ build/
 # Temporary files
 *.tmp
 *.bak
+.env
 
 # System files
 .DS_Store # macOS
