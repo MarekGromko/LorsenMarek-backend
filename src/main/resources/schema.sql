@@ -12,7 +12,7 @@ CREATE TABLE serie(
 id int primary key AUTO_INCREMENT,
 title VARCHAR(100) NOT NULL,
 genre VARCHAR(100) NOT NULL,
-nb_Episode  int NOT null,
+nb_episode  int NOT null,
 note int
 );
 
