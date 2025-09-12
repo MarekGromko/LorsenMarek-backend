@@ -30,7 +30,7 @@ INSERT INTO person(id,first_name,last_name,email,gender) VALUES
 (29, 'Hobie', 'Tomalin', 'htomalins@businesswire.com', 'Male'),
 (30, 'Culver', 'Muldownie', 'cmuldowniet@mozilla.com', 'Male');
 
-INSERT INTO tbl_series (title, genre, nbEpisode, note)
+INSERT INTO serie (title, genre, nbEpisode, note)
 VALUES
 ('Breaking Bad', 'Crime, Drama, Thriller', 62, 10),
 ('Game of Thrones', 'Action, Adventure, Drama', 73, 9),

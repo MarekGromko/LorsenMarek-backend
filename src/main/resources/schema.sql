@@ -7,12 +7,12 @@ CREATE TABLE person(
     gender VARCHAR(50)
 );
 
-DROP TABLE if EXISTS tbl_series;
-CREATE TABLE tbl_series(
+DROP TABLE if EXISTS serie;
+CREATE TABLE serie(
 id int primary key AUTO_INCREMENT,
 title VARCHAR(100) NOT NULL,
 genre VARCHAR(100) NOT NULL,
-nbEpisode  int NOT null,
+nb_Episode  int NOT null,
 note int
 );
 
