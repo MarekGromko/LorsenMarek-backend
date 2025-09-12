@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/main/resources/Database/ShemaSQL.sql
 CREATE DATABASE if NOT EXISTS db_general;
 USE db_general;
 
@@ -43,6 +44,9 @@ VALUES
 ('The Last of Us', 'Action, Adventure, Drama', 9, 9);
 
 INSERT INTO tbl_person(id,first_name,last_name,email,gender) VALUES
+=======
+INSERT INTO person(id,first_name,last_name,email,gender) VALUES
+>>>>>>> origin/develop:src/main/resources/data.sql
 (1, 'Finn', 'Schutt', 'fschutt0@dailymail.co.uk', 'Male'),
 (2, 'Martynne', 'Cauldfield', 'mcauldfield1@ebay.co.uk', 'Female'),
 (3, 'Torre', 'Caldecutt', 'tcaldecutt2@clickbank.net', 'Bigender'),

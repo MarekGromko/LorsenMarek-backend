@@ -1,0 +1,27 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+target/
+build/
+.gradle/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# System files
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# User-specific settings (optional, consider if sharing run configurations)
+# workspace.xml
+# tasks.xml
