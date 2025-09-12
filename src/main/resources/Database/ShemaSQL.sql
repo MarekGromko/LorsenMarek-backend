@@ -10,6 +10,38 @@ email VARCHAR(150),
 gender VARCHAR(50)
 );
 
+DROP TABLE if EXISTS tbl_series;
+CREATE TABLE tbl_series(
+id int primary key AUTO_INCREMENT,
+title VARCHAR(100) NOT NULL,
+genre VARCHAR(100) NOT NULL,
+nbEpisode  int NOT null,
+note int
+);
+
+INSERT INTO tbl_series (title, genre, nbEpisode, note)
+VALUES
+('Breaking Bad', 'Crime, Drama, Thriller', 62, 10),
+('Game of Thrones', 'Action, Adventure, Drama', 73, 9),
+('Stranger Things', 'Drama, Fantasy, Horror', 34, 8),
+('The Office (US)', 'Comedy', 201, 9),
+('Friends', 'Comedy, Romance', 236, 9),
+('The Crown', 'Biography, Drama, History', 60, 8),
+('The Mandalorian', 'Action, Adventure, Fantasy', 24, 8),
+('Dark', 'Crime, Drama, Mystery', 26, 9),
+('Peaky Blinders', 'Crime, Drama', 36, 9),
+('The Witcher', 'Action, Adventure, Drama', 24, 7),
+('The Boys', 'Action, Crime, Drama', 24, 8),
+('Sherlock', 'Crime, Drama, Mystery', 13, 9),
+('House of the Dragon', 'Action, Adventure, Drama', 10, 8),
+('Black Mirror', 'Drama, Sci-Fi, Thriller', 27, 8),
+('How I Met Your Mother', 'Comedy, Romance', 208, 8),
+('Narcos', 'Biography, Crime, Drama', 30, 8),
+('Lupin', 'Action, Crime, Drama', 17, 8),
+('Better Call Saul', 'Crime, Drama', 63, 9),
+('Vikings', 'Action, Adventure, Drama', 89, 8),
+('The Last of Us', 'Action, Adventure, Drama', 9, 9);
+
 INSERT INTO tbl_person(id,first_name,last_name,email,gender) VALUES
 (1, 'Finn', 'Schutt', 'fschutt0@dailymail.co.uk', 'Male'),
 (2, 'Martynne', 'Cauldfield', 'mcauldfield1@ebay.co.uk', 'Female'),
