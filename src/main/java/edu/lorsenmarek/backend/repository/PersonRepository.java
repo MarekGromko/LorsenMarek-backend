@@ -34,9 +34,9 @@ public class PersonRepository {
         var sql = "";
         var params = new MapSqlParameterSource();
         if(pageOpts == null) {
-            sql = "SELECT * FROM person SORT BY id";
+            sql = "SELECT * FROM person ORDER BY id";
         } else {
-            sql = "SELECT * FROM person SORT BY id LIMIT :limit OFFSET :offset";
+            sql = "SELECT * FROM person ORDER BY id LIMIT :limit OFFSET :offset";
             params.addValue("limit", pageOpts.getPageSize());
             params.addValue("offset", pageOpts.getPageSize() * pageOpts.getPageIndex());
         }
@@ -96,8 +96,8 @@ public class PersonRepository {
         }
     }
     public List<Person> searchByName(String hint, PageOptions pageOpts) {
-        var sql = "SELECT * FROM person WHERE INSTR(:hint, CONCAT(first_name, ' ', last_name)) > 0 SORT BY id";
-        var params = new MapSqlParameterSource();
+        var sql = "SELECT * FROM person WHERE INSTR(CONCAT(first_name, ' ', last_name), :hint) > 0 ORDER BY id";
+        var params = new MapSqlParameterSource().addValue("hint", hint);
         if(pageOpts != null) {
             sql += " LIMIT :limit OFFSET :offset";
             params.addValue("limit", pageOpts.getPageSize());
