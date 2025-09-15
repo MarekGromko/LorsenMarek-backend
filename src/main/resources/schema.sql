@@ -9,6 +9,7 @@ CREATE TABLE person(
 
 DROP TABLE if EXISTS serie;
 CREATE TABLE serie(
+
 id int primary key AUTO_INCREMENT,
 title VARCHAR(100) NOT NULL,
 genre VARCHAR(100) NOT NULL,
