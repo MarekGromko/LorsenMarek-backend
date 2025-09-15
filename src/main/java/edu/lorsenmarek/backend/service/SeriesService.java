@@ -1,12 +1,10 @@
 package edu.lorsenmarek.backend.service;
 
-import aj.org.objectweb.asm.commons.Remapper;
 import edu.lorsenmarek.backend.model.Serie;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.repository.SeriesRepository;
 
 @Service
@@ -19,7 +17,7 @@ public class SeriesService {
         this.seriesRepository = seriesRepository;
     }
 
-    public  Serie save(Serie newSerie) {
+    public int save(Serie newSerie) {
         return seriesRepository.save(newSerie);
 
     }

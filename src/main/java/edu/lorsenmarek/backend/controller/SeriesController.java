@@ -1,6 +1,5 @@
 package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.model.Serie;
-import edu.lorsenmarek.backend.repository.SeriesRepository;
 import edu.lorsenmarek.backend.service.SeriesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public List<Serie> searchSeries(@RequestParam(required = false)String genre){
 
 
     @PostMapping
-    public Serie createSeries(@RequestBody Serie newSerie) {
+    public int createSeries(@RequestBody Serie newSerie) {
         return seriesService.save(newSerie);
     }
 
