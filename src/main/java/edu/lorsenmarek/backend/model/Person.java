@@ -1,5 +1,6 @@
 package edu.lorsenmarek.backend.model;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
 public class Person {
     private Integer id;
     private String firstName;
