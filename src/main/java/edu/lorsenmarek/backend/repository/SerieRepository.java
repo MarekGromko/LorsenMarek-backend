@@ -1,7 +1,4 @@
 package edu.lorsenmarek.backend.repository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import edu.lorsenmarek.backend.model.Serie;
-import java.util.*;
 import edu.lorsenmarek.backend.model.Serie;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class SeriesRepository {
+public class SerieRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public SeriesRepository(JdbcTemplate jdbcTemplate) {
+    public SerieRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -33,6 +30,11 @@ public class SeriesRepository {
             return serie;
         }
     };
+    public List<Serie> searchByTitle(String title){
+        String sql = "SELECT * FROM serie WHERE LOWER(title) LIKE ?";
+        String pattern = "%" + title.toLowerCase() + "%";
+        return jdbcTemplate.query(sql, serieRowMapper, pattern);
+    }
 
     public List<Serie> findAll() {
         String sql = "SELECT * FROM serie";
@@ -48,10 +50,14 @@ public class SeriesRepository {
             return Optional.of(results.get(0));
         }
     }
-
-    public List<Serie> findByGenre(String genre) {
-        String sql = "SELECT * FROM serie WHERE genre = ?";
-        return jdbcTemplate.query(sql, serieRowMapper, genre);
+    public List<Serie> search(String genre) {
+        if (genre == null || genre.isEmpty()) {
+            String sql = "SELECT * FROM serie";
+            return jdbcTemplate.query(sql, serieRowMapper);
+        } else {
+            String sql = "SELECT * FROM serie WHERE genre = ?";
+            return jdbcTemplate.query(sql, serieRowMapper, genre);
+        }
     }
 
     public int save(Serie serie) {
@@ -75,6 +81,7 @@ public class SeriesRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class,id);
         return count != null && count > 0;
     }
+
 
 
 }
