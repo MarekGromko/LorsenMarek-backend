@@ -1,6 +1,6 @@
 package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.model.Serie;
-import edu.lorsenmarek.backend.service.SeriesService;
+import edu.lorsenmarek.backend.repository.SerieRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -9,50 +9,56 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/serie")
 public class SeriesController {
-    private final SeriesService seriesService;
+    private final SerieRepository serieRepository;
 
-    public SeriesController(SeriesService seriesService){
-        this.seriesService = seriesService;
+    public SeriesController(SerieRepository serieRepository){
+        this.serieRepository = serieRepository;
     }
 
 @GetMapping("/search")
 public List<Serie> searchSeries(@RequestParam(required = false)String genre){
-        return seriesService.search(genre);
+        return serieRepository.search(genre);
 }
+
+    @GetMapping("/searchByTitle")
+    public List<Serie> searchByTitle(@RequestParam String title) {
+        return serieRepository.searchByTitle(title);
+    }
+
+
     @GetMapping
     public List<Serie> getAllSerie() {
-        return seriesService.findAll();
+        return serieRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Serie> getSeriesById(@PathVariable int id) {
-        Optional<Serie> serie = seriesService.findById(id);
+        Optional<Serie> serie = serieRepository.findById(id);
         return serie.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
     @PostMapping
-    public int createSeries(@RequestBody Serie newSerie) {
-        return seriesService.save(newSerie);
+    public int createSerie(@RequestBody Serie newSerie) {
+        return serieRepository.save(newSerie);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Serie> updateSeries(@PathVariable int id, @RequestBody Serie updatedSeries) {
-        return seriesService.findById(id).map(serie -> {
-            serie.setTitle(updatedSeries.getTitle());
-            serie.setGenre(updatedSeries.getGenre());
-            serie.setNb_episode(updatedSeries.getNb_episode());
-            serie.setNote(updatedSeries.getNote());
-            seriesService.save(serie);
+    public ResponseEntity<Serie> updateSerie(@PathVariable int id, @RequestBody Serie updatedSerie) {
+        return serieRepository.findById(id).map(serie -> {
+            serie.setTitle(updatedSerie.getTitle());
+            serie.setGenre(updatedSerie.getGenre());
+            serie.setNb_episode(updatedSerie.getNb_episode());
+            serie.setNote(updatedSerie.getNote());
+            serieRepository.save(serie);
             return ResponseEntity.ok(serie);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    // DELETE /series/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSeries(@PathVariable int id) {
-        if (seriesService.existsById(id)) {
-            seriesService.deleteById(id);
+        if (serieRepository.existsById(id)) {
+            serieRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
