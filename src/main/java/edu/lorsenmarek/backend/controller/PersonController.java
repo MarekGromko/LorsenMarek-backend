@@ -24,7 +24,7 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Person>> getAllPerson(
+    public ResponseEntity<List<Person>> getAllPeople(
             @RequestParam(name = "pageIndex", required = false) Integer pageIndex,
             @RequestParam(name = "pageSize",  required = false) Integer pageSize) {
         PageOptions pageOpts = null;
@@ -42,7 +42,7 @@ public class PersonController {
         var result = personRepo.findById(id);
         return ResponseEntity.of(result);
     }
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> addPerson(@RequestBody Person personToAdd) {
         if(personRepo.insert(personToAdd) == 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
