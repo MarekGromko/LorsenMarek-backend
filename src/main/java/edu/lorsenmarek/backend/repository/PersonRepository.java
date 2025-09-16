@@ -37,7 +37,7 @@ public class PersonRepository {
             sql = "SELECT * FROM person ORDER BY id";
         } else {
             sql = "SELECT * FROM person ORDER BY id LIMIT :limit OFFSET :offset";
-            params.addValue("limit", pageOpts.getPageSize());
+            params.addValue("limit", pageOpts.getPageSize() + 1);
             params.addValue("offset", pageOpts.getPageSize() * pageOpts.getPageIndex());
         }
         try {
