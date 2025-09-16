@@ -1,13 +1,11 @@
 package edu.lorsenmarek.backend.model;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
-import jakarta.persistence.*;
 
 @Data
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Serie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String genre;
