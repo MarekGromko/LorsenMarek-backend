@@ -8,10 +8,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/serie")
-public class SeriesController {
+public class SerieController {
     private final SerieRepository serieRepository;
 
-    public SeriesController(SerieRepository serieRepository){
+    public SerieController(SerieRepository serieRepository){
         this.serieRepository = serieRepository;
     }
 
@@ -24,7 +24,6 @@ public List<Serie> searchSeries(@RequestParam(required = false)String genre){
     public List<Serie> searchByTitle(@RequestParam String title) {
         return serieRepository.searchByTitle(title);
     }
-
 
     @GetMapping
     public List<Serie> getAllSerie() {
