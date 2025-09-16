@@ -55,44 +55,67 @@ public class PersonRepository {
         }
     }
     public void save(Person person){
-        var params = new MapSqlParameterSource()
-                .addValue("id", person.getId())
-                .addValue("first_name", person.getId())
-                .addValue("last_name", person.getId())
-                .addValue("email", person.getId())
-                .addValue("gender", person.getId());
         try {
             if(person.getId() > 0 && existsById(person.getId()))
             {
-                jdbc.update("""
-                        UPDATE SET
-                            email = :email,
-                            gender = :gender,
-                            first_name = :first_name,
-                            last_name = :last_name,
-                        WHERE id = :id
-                        """,
-                        params
-                );
+                update(person);
             }
             else
             {
-                jdbc.update("""
-                        INSERT INTO person (email, gender, first_name, last_name) VALUES (:email, :gender, :first_name, :last_name)
-                        """,
-                        params
-                );
+                insert(person);
             }
         } catch (DataAccessException e) {
             return;
         }
     }
-    public void deleteById(int id){
+    public int update(Person person) {
+        if(person.getId() == null)
+            return 0;
+        var params = new MapSqlParameterSource()
+                .addValue("id", person.getId())
+                .addValue("first_name", person.getFirstName())
+                .addValue("last_name", person.getLastName())
+                .addValue("email", person.getEmail())
+                .addValue("gender", person.getGender());
+        try {
+            return jdbc.update("""
+                    UPDATE person SET
+                        email = :email,
+                        gender = :gender,
+                        first_name = :first_name,
+                        last_name = :last_name
+                    WHERE id = :id
+                    """,
+                    params
+            );
+        } catch(Exception e){
+            return 0;
+        }
+    }
+    public int insert(Person person) {
+        if(person.getId() == null)
+            return 0;
+        var params = new MapSqlParameterSource()
+                .addValue("first_name", person.getFirstName())
+                .addValue("last_name", person.getLastName())
+                .addValue("email", person.getEmail())
+                .addValue("gender", person.getGender());
+        try {
+            return jdbc.update("""
+                        INSERT INTO person (email, gender, first_name, last_name) VALUES (:email, :gender, :first_name, :last_name)
+                        """,
+                    params
+            );
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+    public int deleteById(int id){
         try {
             var params = new MapSqlParameterSource().addValue("id", id);
-            jdbc.update("DELETE FROM person WHERE id = :id", params);
+            return jdbc.update("DELETE FROM person WHERE id = :id", params);
         }catch (DataAccessException e){
-            return;
+            return 0;
         }
     }
     public List<Person> searchByName(String hint, PageOptions pageOpts) {
@@ -100,8 +123,8 @@ public class PersonRepository {
         var params = new MapSqlParameterSource().addValue("hint", hint);
         if(pageOpts != null) {
             sql += " LIMIT :limit OFFSET :offset";
-            params.addValue("limit", pageOpts.getPageSize());
-            params.addValue("offset", pageOpts.getPageSize() * pageOpts.getPageIndex());
+            params.addValue("limit", 1 + pageOpts.getPageSize());
+            params.addValue("offset", pageOpts.getPageSize() * (pageOpts.getPageIndex()-1));
         }
         try {
             return jdbc.query(sql, params, personMapper);
