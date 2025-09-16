@@ -24,14 +24,14 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Person>> getAllPerson(
+    public ResponseEntity<List<Person>> getAllPeople(
             @RequestParam(name = "pageIndex", required = false) Integer pageIndex,
             @RequestParam(name = "pageSize",  required = false) Integer pageSize) {
         PageOptions pageOpts = null;
         if(pageIndex != null && pageSize != null) {
             pageOpts = PageOptions.builder()
-                    .pageIndex(pageIndex)
-                    .pageSize(pageSize)
+                    .pageIndex(Math.max(pageIndex, 1))
+                    .pageSize(Math.max(pageSize, 1))
                     .build();
         }
         var result = personRepo.findAll(pageOpts);
@@ -42,9 +42,11 @@ public class PersonController {
         var result = personRepo.findById(id);
         return ResponseEntity.of(result);
     }
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> addPerson(@RequestBody Person personToAdd) {
-        personRepo.save(personToAdd);
+        if(personRepo.insert(personToAdd) == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PatchMapping("/{id}")
@@ -53,14 +55,17 @@ public class PersonController {
             @RequestBody Person personToPatch) {
 
         personToPatch.setId(personId);
-        personRepo.save(personToPatch);
+        if(personRepo.update(personToPatch) == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        };
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePerson(
-            @PathVariable("id") Integer personId,
-            @RequestBody Person personToPatch) {
-        personRepo.deleteById(personId);
+            @PathVariable("id") Integer personId) {
+        if(personRepo.deleteById(personId) == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        };
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @GetMapping("/search")
@@ -71,8 +76,8 @@ public class PersonController {
         PageOptions pageOpts = null;
         if(pageIndex != null && pageSize != null) {
             pageOpts = PageOptions.builder()
-                    .pageIndex(pageIndex)
-                    .pageSize(pageSize)
+                    .pageIndex(Math.max(pageIndex,1))
+                    .pageSize(Math.max(pageSize, 1))
                     .build();
         }
         var result = personRepo.searchByName(name, pageOpts);
