@@ -26,8 +26,8 @@ CREATE TABLE `person_serie_history` (
     PRIMARY KEY (`person_id`,`serie_id`),
     KEY `serie_id` (`serie_id`),
     KEY `person_id` (`person_id`),
-    CONSTRAINT `person_serie_history_fk_person` FOREIGN KEY (`person_id`) REFERENCES `Person` (`id`),
-    CONSTRAINT `person_serie_history_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`)
+    CONSTRAINT `person_serie_history_fk_person` FOREIGN KEY (`person_id`) REFERENCES `Person` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `person_serie_history_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
 );
 
 
