@@ -14,6 +14,6 @@ import java.time.Instant;
 public class PersonSerieHistory {
     private Integer personId;
     private Integer serieId;
-    private Instant dernierVisionage;
-    private Integer dureeEcoute;
+    private Instant lastWatch;
+    private Integer instanceWatch;
 }
