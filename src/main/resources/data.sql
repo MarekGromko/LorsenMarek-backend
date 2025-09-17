@@ -52,7 +52,7 @@ INSERT INTO serie (id, title, genre, nb_episode, note) VALUES
 (19, 'Vikings', 'Action, Adventure, Drama', 89, 8),
 (20, 'The Last of Us', 'Action, Adventure, Drama', 9, 9);
 
-INSERT INTO `person_serie_history` (`person_id`, `serie_id`, `last_watch`, `watch_duration_ms`) VALUES
+INSERT INTO `person_serie_history` (`person_id`, `serie_id`, `last_watch`, `instance_watch`) VALUES
 (1, 7, '2025-04-28 15:12:59', 1218753),
 (1, 12, '2025-05-23 22:20:53', 1065205),
 (1, 15, '2025-06-02 19:21:11', 1714491),
