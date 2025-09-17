@@ -22,7 +22,7 @@ CREATE TABLE `person_serie_history` (
     `person_id` int NOT NULL,
     `serie_id` int NOT NULL,
     `last_watch` timestamp NOT NULL DEFAULT current_timestamp(),
-    `watch_duration_ms` int NOT NULL DEFAULT 0,
+    `instance_watch` int NOT NULL DEFAULT 1,
     PRIMARY KEY (`person_id`,`serie_id`),
     KEY `serie_id` (`serie_id`),
     KEY `person_id` (`person_id`),
