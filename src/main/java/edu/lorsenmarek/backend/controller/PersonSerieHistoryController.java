@@ -1,6 +1,5 @@
 package edu.lorsenmarek.backend.controller;
 
-import edu.lorsenmarek.backend.model.Person;
 import edu.lorsenmarek.backend.model.PersonSerieHistory;
 import edu.lorsenmarek.backend.repository.PersonSerieHistoryRepository;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/person-serie-history")
