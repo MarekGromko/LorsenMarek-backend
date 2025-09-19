@@ -3,7 +3,9 @@ package edu.lorsenmarek.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.repository.SerieRepository;
+import edu.lorsenmarek.backend.utility.SerieSearchOption;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -112,25 +114,52 @@ public class SerieControllerTest {
     }
 
     @Test
-    void testSearchByGenre() throws Exception {
-        Serie serie = new Serie(5, "Dark", "Thriller", 26, 8);
-        when(serieRepository.search("Thriller")).thenReturn(List.of(serie));
+    public void testSearchSeries_withParameters() throws Exception {
+        Serie serie = new Serie();
+        serie.setId(1);
+        serie.setTitle("Dark");
+        serie.setGenre("Thriller");
+        serie.setNb_episode(20);
+        serie.setNote(8);
 
-        mockMvc.perform(get("/serie/search").param("genre", "Thriller"))
+        List<Serie> mockResult = List.of(serie);
+
+        when(serieRepository.searchByOption(any(SerieSearchOption.class))).thenReturn(mockResult);
+        mockMvc.perform(get("/serie/search")
+                        .param("title", "Dark")
+                        .param("genre", "Thriller")
+                        .param("minEpisode", "10")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].genre").value("Thriller"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].title").value("Dark"))
+                .andExpect(jsonPath("$[0].genre").value("Thriller"))
+                .andExpect(jsonPath("$[0].nb_episode").value(20))
+                .andExpect(jsonPath("$[0].note").value(8));
+
+        ArgumentCaptor<SerieSearchOption> optionCaptor = ArgumentCaptor.forClass(SerieSearchOption.class);
+        verify(serieRepository).searchByOption(optionCaptor.capture());
+
+        SerieSearchOption capturedOption = optionCaptor.getValue();
+        assert capturedOption.getTitle().equals("Dark");
+        assert capturedOption.getGenre().equals("Thriller");
+        assert capturedOption.getMinEpisode().equals(10);
     }
 
     @Test
-    void testSearchByTitle() throws Exception {
-        Serie serie = new Serie(5, "Dark", "Thriller", 26, 8);
-        when(serieRepository.searchByTitle("Dark")).thenReturn(List.of(serie));
+    public void testSearchSeries_withoutParameters() throws Exception {
 
-        mockMvc.perform(get("/serie/searchByTitle").param("title", "Dark"))
+        when(serieRepository.searchByOption(any(SerieSearchOption.class))).thenReturn(List.of());
+
+
+        mockMvc.perform(get("/serie/search")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].title").value("Dark"));
+                .andExpect(content().json("[]"));
+
+        verify(serieRepository).searchByOption(any(SerieSearchOption.class));
     }
+
 
 }

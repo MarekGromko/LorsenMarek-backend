@@ -1,11 +1,14 @@
 package edu.lorsenmarek.backend.repository;
 import edu.lorsenmarek.backend.model.Serie;
+import edu.lorsenmarek.backend.utility.SerieSearchOption;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +17,10 @@ public class SerieRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public SerieRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
     private final RowMapper<Serie> serieRowMapper = new RowMapper<>() {
         @Override
         public Serie mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -30,10 +33,27 @@ public class SerieRepository {
             return serie;
         }
     };
-    public List<Serie> searchByTitle(String title){
-        String sql = "SELECT * FROM serie WHERE LOWER(title) LIKE ?";
-        String pattern = "%" + title.toLowerCase() + "%";
-        return jdbcTemplate.query(sql, serieRowMapper, pattern);
+
+    public List<Serie> searchByOption(SerieSearchOption option) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM serie WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (option.getTitle() != null && !option.getTitle().isEmpty()) {
+            sql.append(" AND LOWER(title) LIKE ?");
+            params.add("%" + option.getTitle().toLowerCase() + "%");
+        }
+
+        if (option.getGenre() != null && !option.getGenre().isEmpty()) {
+            sql.append(" AND genre = ?");
+            params.add(option.getGenre());
+        }
+
+        if (option.getMinEpisode() != null) {
+            sql.append(" AND nb_episode >= ?");
+            params.add(option.getMinEpisode());
+        }
+
+        return jdbcTemplate.query(sql.toString(), params.toArray(), serieRowMapper);
     }
 
     public List<Serie> findAll() {
@@ -50,15 +70,6 @@ public class SerieRepository {
             return Optional.of(results.get(0));
         }
     }
-    public List<Serie> search(String genre) {
-        if (genre == null || genre.isEmpty()) {
-            String sql = "SELECT * FROM serie";
-            return jdbcTemplate.query(sql, serieRowMapper);
-        } else {
-            String sql = "SELECT * FROM serie WHERE genre = ?";
-            return jdbcTemplate.query(sql, serieRowMapper, genre);
-        }
-    }
 
     public int save(Serie serie) {
         if (serie.getId() == null) {
@@ -71,6 +82,7 @@ public class SerieRepository {
             return jdbcTemplate.update(sql, serie.getTitle(), serie.getGenre(), serie.getNb_episode(), serie.getNote(), serie.getId());
         }
     }
+
 
     public int deleteById(Integer id) {
         String sql = "DELETE FROM serie WHERE id = ?";
