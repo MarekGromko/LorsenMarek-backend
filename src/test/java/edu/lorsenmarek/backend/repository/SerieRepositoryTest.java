@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import edu.lorsenmarek.backend.model.Serie;
+import edu.lorsenmarek.backend.utility.SerieSearchOption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -19,7 +20,11 @@ public class SerieRepositoryTest {
         private edu.lorsenmarek.backend.repository.SerieRepository serieRepository;
 
         private Serie testSerie;
+    @Captor
+    private ArgumentCaptor<String> sqlCaptor;
 
+    @Captor
+    private ArgumentCaptor<Object[]> paramsCaptor;
         @BeforeEach
         void setUp() {
             MockitoAnnotations.openMocks(this);
@@ -44,7 +49,93 @@ public class SerieRepositoryTest {
             assertEquals(1, result.size());
             assertEquals("Dark", result.get(0).getTitle());
         }
+    @Test
+    public void testSearchByOption_withAllParameters() {
 
+        SerieSearchOption option = new SerieSearchOption();
+        option.setTitle("dark");
+        option.setGenre("Thriller");
+        option.setMinEpisode(10);
+
+        List<Serie> expected = List.of(new Serie());
+        when(jdbcTemplate.query(anyString(), any(Object[].class), any(RowMapper.class))).thenReturn(expected);
+
+
+        List<Serie> result = serieRepository.searchByOption(option);
+
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(jdbcTemplate).query(sqlCaptor.capture(), paramsCaptor.capture(), any(RowMapper.class));
+
+        String sql = sqlCaptor.getValue();
+        Object[] params = paramsCaptor.getValue();
+
+
+        assertTrue(sql.contains("LOWER(title) LIKE ?"));
+        assertTrue(sql.contains("genre = ?"));
+        assertTrue(sql.contains("nb_episode >= ?"));
+
+        assertEquals("%dark%", params[0]);
+        assertEquals("Thriller", params[1]);
+        assertEquals(10, params[2]);
+    }
+    @Test
+    public void testSearchByOption_withNoParameters() {
+
+        SerieSearchOption option = new SerieSearchOption(); // tous null
+
+        List<Serie> expected = List.of(new Serie());
+        when(jdbcTemplate.query(anyString(), any(Object[].class), any(RowMapper.class))).thenReturn(expected);
+
+
+        List<Serie> result = serieRepository.searchByOption(option);
+
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(jdbcTemplate).query(sqlCaptor.capture(), paramsCaptor.capture(), any(RowMapper.class));
+
+        String sql = sqlCaptor.getValue();
+        Object[] params = paramsCaptor.getValue();
+
+
+        assertEquals("SELECT * FROM serie WHERE 1=1", sql);
+
+        assertEquals(0, params.length);
+    }
+
+    @Test
+    public void testSearchByOption_withPartialParameters() {
+
+        SerieSearchOption option = new SerieSearchOption();
+        option.setTitle("test");
+        option.setMinEpisode(5);
+
+        List<Serie> expected = List.of(new Serie());
+        when(jdbcTemplate.query(anyString(), any(Object[].class), any(RowMapper.class))).thenReturn(expected);
+
+
+        List<Serie> result = serieRepository.searchByOption(option);
+
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(jdbcTemplate).query(sqlCaptor.capture(), paramsCaptor.capture(), any(RowMapper.class));
+
+        String sql = sqlCaptor.getValue();
+        Object[] params = paramsCaptor.getValue();
+
+        assertTrue(sql.contains("LOWER(title) LIKE ?"));
+        assertTrue(sql.contains("nb_episode >= ?"));
+        assertFalse(sql.contains("genre = ?"));
+
+        assertEquals("%test%", params[0]);
+        assertEquals(5, params[1]);
+    }
         @Test
         void testFindById_Found() {
             List<Serie> mockResult = List.of(testSerie);
@@ -68,40 +159,8 @@ public class SerieRepositoryTest {
             assertFalse(result.isPresent());
         }
 
-        @Test
-        void testSearchByTitle() {
-            String sql = "SELECT * FROM serie WHERE LOWER(title) LIKE ?";
-            String pattern = "%dark%";
 
-            when(jdbcTemplate.query(eq(sql), any(RowMapper.class), eq(pattern)))
-                    .thenReturn(List.of(testSerie));
 
-            List<Serie> result = serieRepository.searchByTitle("Dark");
-
-            assertEquals(1, result.size());
-            assertEquals("Dark", result.get(0).getTitle());
-        }
-
-        @Test
-        void testSearch_WithGenre() {
-            when(jdbcTemplate.query(eq("SELECT * FROM serie WHERE genre = ?"), any(RowMapper.class), eq("Thriller")))
-                    .thenReturn(List.of(testSerie));
-
-            List<Serie> result = serieRepository.search("Thriller");
-
-            assertEquals(1, result.size());
-            assertEquals("Thriller", result.get(0).getGenre());
-        }
-
-        @Test
-        void testSearchWithoutGenre() {
-            when(jdbcTemplate.query(eq("SELECT * FROM serie"), any(RowMapper.class)))
-                    .thenReturn(List.of(testSerie));
-
-            List<Serie> result = serieRepository.search(null);
-
-            assertEquals(1, result.size());
-        }
 
         @Test
         void testSaveInsert() {

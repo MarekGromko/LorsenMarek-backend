@@ -1,6 +1,7 @@
 package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.repository.SerieRepository;
+import edu.lorsenmarek.backend.utility.SerieSearchOption;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,14 +16,17 @@ public class SerieController {
         this.serieRepository = serieRepository;
     }
 
-@GetMapping("/search")
-public List<Serie> searchSeries(@RequestParam(required = false)String genre){
-        return serieRepository.search(genre);
-}
-
-    @GetMapping("/searchByTitle")
-    public List<Serie> searchByTitle(@RequestParam String title) {
-        return serieRepository.searchByTitle(title);
+    @GetMapping("/search")
+    public List<Serie> searchSeries(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) Integer minEpisode
+    ) {
+        SerieSearchOption option = new SerieSearchOption();
+        option.setTitle(title);
+        option.setGenre(genre);
+        option.setMinEpisode(minEpisode);
+        return serieRepository.searchByOption(option);
     }
 
     @GetMapping
@@ -55,7 +59,7 @@ public List<Serie> searchSeries(@RequestParam(required = false)String genre){
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSeries(@PathVariable int id) {
+    public ResponseEntity<Void> deleteSerie(@PathVariable int id) {
         if (serieRepository.existsById(id)) {
             serieRepository.deleteById(id);
             return ResponseEntity.noContent().build();
