@@ -18,7 +18,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-public class InstantSerializerConfig {
+public class InstantJSONConfig {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss")
             .withZone(ZoneOffset.UTC);
