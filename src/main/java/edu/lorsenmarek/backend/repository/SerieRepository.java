@@ -44,8 +44,8 @@ public class SerieRepository {
         }
 
         if (option.getGenre() != null && !option.getGenre().isEmpty()) {
-            sql.append(" AND genre = ?");
-            params.add(option.getGenre());
+            sql.append(" AND LOWER(genre) LIKE ?");
+            params.add("%" + option.getGenre().toLowerCase() + "%");
         }
 
         if (option.getMinEpisode() != null) {
