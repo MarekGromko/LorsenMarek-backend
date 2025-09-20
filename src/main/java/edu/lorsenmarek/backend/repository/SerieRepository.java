@@ -21,19 +21,7 @@ public class SerieRepository {
     public SerieRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    private final RowMapper<Serie> serieRowMapper = new RowMapper<>() {
-        @Override
-        public Serie mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Serie serie = new Serie();
-            serie.setId(rs.getInt("id"));
-            serie.setTitle(rs.getString("title"));
-            serie.setGenre(rs.getString("genre"));
-            serie.setNb_episode(rs.getInt("nb_episode"));
-            serie.setNote(rs.getInt("note"));
-            return serie;
-        }
-    };
-
+    private final RowMapper<Serie> serieRowMapper = new SerieMapper();
     public List<Serie> searchByOption(SerieSearchOption option) {
         StringBuilder sql = new StringBuilder("SELECT * FROM serie WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -93,7 +81,18 @@ public class SerieRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class,id);
         return count != null && count > 0;
     }
-
+    public static class SerieMapper implements RowMapper<Serie> {
+        @Override
+        public Serie mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Serie serie = new Serie();
+            serie.setId(rs.getInt("id"));
+            serie.setTitle(rs.getString("title"));
+            serie.setGenre(rs.getString("genre"));
+            serie.setNb_episode(rs.getInt("nb_episode"));
+            serie.setNote(rs.getInt("note"));
+            return serie;
+        }
+    };
 
 
 }

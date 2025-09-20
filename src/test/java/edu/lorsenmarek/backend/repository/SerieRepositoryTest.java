@@ -74,11 +74,11 @@ public class SerieRepositoryTest {
 
 
         assertTrue(sql.contains("LOWER(title) LIKE ?"));
-        assertTrue(sql.contains("genre = ?"));
+        assertTrue(sql.contains("LOWER(genre) LIKE ?"));
         assertTrue(sql.contains("nb_episode >= ?"));
 
         assertEquals("%dark%", params[0]);
-        assertEquals("Thriller", params[1]);
+        assertEquals("%thriller%", params[1]);
         assertEquals(10, params[2]);
     }
     @Test

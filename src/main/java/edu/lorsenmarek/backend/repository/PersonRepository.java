@@ -133,7 +133,7 @@ public class PersonRepository {
         }
 
     }
-    private static class PersonMapper implements RowMapper<Person> {
+    public static class PersonMapper implements RowMapper<Person> {
         @Override
         @NonNull
         public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
