@@ -42,6 +42,11 @@ lien vers le github du [Frontend](https://github.com/MarekGromko/LorsenMarek-fro
 
 ## Installation
 
+Installer les dépendances
+```bash
+mvn install
+```
+
 Pour tester: 
 ```bash
 ./mvnw clean test
