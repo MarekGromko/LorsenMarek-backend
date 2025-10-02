@@ -1,6 +1,6 @@
 package edu.lorsenmarek.backend.repository;
 
-import edu.lorsenmarek.backend.model.Person;
+import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.common.PageOptions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,36 +17,36 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class PersonRepositoryTest {
+class UserRepositoryTest {
 
-    final Person JaneDoe = Person.builder()
-            .id(5)
+    final User JaneDoe = User.builder()
+            .id(5L)
             .firstName("Jane")
             .lastName("Doe")
             .email("janeDoe@abc.def")
-            .gender("F")
+            .title("Ms")
             .build();
     @Mock
     NamedParameterJdbcTemplate jdbcTemplate;
 
     @InjectMocks
-    PersonRepository personRepo;
+    UserRepository userRepo;
 
     @Test
     void findById_checkValidSQL() {
         // arrange
-        when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any())).thenReturn(List.of(new Person()));
+        when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any())).thenReturn(List.of(new User()));
 
         // act
-        personRepo.findById(10);
+        userRepo.findById(10);
 
         // capture
         ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<SqlParameterSource> paramCaptor = ArgumentCaptor.forClass(SqlParameterSource.class);
-        verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<Person>>any());
+        verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<User>>any());
 
         // assert
-        assertEquals("SELECT * FROM person WHERE id = :id", sqlCaptor.getValue());
+        assertEquals("SELECT * FROM user WHERE id = :id", sqlCaptor.getValue());
         assertEquals(10, paramCaptor.getValue().getValue("id"));
     }
     @Nested
@@ -54,33 +54,33 @@ class PersonRepositoryTest {
         @Test
         void whenNoPage_SQLShouldSelectAll() {
             // arrange
-            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any())).thenReturn(List.of(new Person()));
+            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any())).thenReturn(List.of(new User()));
 
             // act
-            personRepo.findAll(null);
+            userRepo.findAll(null);
 
             // capture
             ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
-            verify(jdbcTemplate).query(sqlCaptor.capture(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any());
+            verify(jdbcTemplate).query(sqlCaptor.capture(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any());
 
             // assert
-            assertEquals("SELECT * FROM person ORDER BY id", sqlCaptor.getValue());
+            assertEquals("SELECT * FROM user ORDER BY id", sqlCaptor.getValue());
         }
         @Test
         void whenPage_SQLShouldSelectWithLimitOffset() {
             // arrange
-            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any())).thenReturn(List.of(new Person()));
+            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any())).thenReturn(List.of(new User()));
 
             // act
-            personRepo.findAll(new PageOptions(5, 10));
+            userRepo.findAll(new PageOptions(5, 10));
 
             // capture
             ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
             ArgumentCaptor<SqlParameterSource> paramCaptor = ArgumentCaptor.forClass(SqlParameterSource.class);
-            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<Person>>any());
+            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<User>>any());
 
             // assert
-            assertEquals("SELECT * FROM person ORDER BY id LIMIT :limit OFFSET :offset", sqlCaptor.getValue());
+            assertEquals("SELECT * FROM user ORDER BY id LIMIT :limit OFFSET :offset", sqlCaptor.getValue());
             assertEquals(5+1, paramCaptor.getValue().getValue("limit"));
             assertEquals(5*10, paramCaptor.getValue().getValue("offset"));
         }
@@ -91,7 +91,7 @@ class PersonRepositoryTest {
         when(jdbcTemplate.queryForList(anyString(), any(SqlParameterSource.class))).thenReturn(List.of(new HashMap<>()));
 
         // act
-        personRepo.existsById(10);
+        userRepo.existsById(10);
 
         // capture
         ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
@@ -99,7 +99,7 @@ class PersonRepositoryTest {
         verify(jdbcTemplate).queryForList(sqlCaptor.capture(), paramCaptor.capture());
 
         // assert
-        assertEquals("SELECT id FROM person WHERE id = ? LIMIT 1", sqlCaptor.getValue());
+        assertEquals("SELECT id FROM user WHERE id = ? LIMIT 1", sqlCaptor.getValue());
         assertEquals(10, paramCaptor.getValue().getValue("id"));
     }
     @Test
@@ -108,7 +108,7 @@ class PersonRepositoryTest {
         when(jdbcTemplate.update(anyString(), any(SqlParameterSource.class))).thenReturn(1);
 
         // act
-        personRepo.update(JaneDoe);
+        userRepo.update(JaneDoe);
 
         // capture
         ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
@@ -117,7 +117,7 @@ class PersonRepositoryTest {
 
         // assert
         assertEquals("""
-                    UPDATE person SET
+                    UPDATE user SET
                         email = :email,
                         gender = :gender,
                         first_name = :first_name,
@@ -134,7 +134,7 @@ class PersonRepositoryTest {
         when(jdbcTemplate.update(anyString(), any(SqlParameterSource.class))).thenReturn(1);
 
         // act
-        personRepo.insert(JaneDoe);
+        userRepo.insert(JaneDoe);
 
         // capture
         ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
@@ -142,7 +142,7 @@ class PersonRepositoryTest {
         verify(jdbcTemplate).update(sqlCaptor.capture(), paramCaptor.capture());
 
         // assert
-        assertEquals("INSERT INTO person (email, gender, first_name, last_name) VALUES (:email, :gender, :first_name, :last_name)\n", sqlCaptor.getValue());
+        assertEquals("INSERT INTO user (email, gender, first_name, last_name) VALUES (:email, :gender, :first_name, :last_name)\n", sqlCaptor.getValue());
         assertEquals("Doe", paramCaptor.getValue().getValue("last_name"));
     }
 
@@ -152,7 +152,7 @@ class PersonRepositoryTest {
         when(jdbcTemplate.update(anyString(), any(SqlParameterSource.class))).thenReturn(1);
 
         // act
-        personRepo.deleteById(10);
+        userRepo.deleteById(10);
 
         // capture
         ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
@@ -160,7 +160,7 @@ class PersonRepositoryTest {
         verify(jdbcTemplate).update(sqlCaptor.capture(), paramCaptor.capture());
 
         // assert
-        assertEquals("DELETE FROM person WHERE id = :id", sqlCaptor.getValue());
+        assertEquals("DELETE FROM user WHERE id = :id", sqlCaptor.getValue());
         assertEquals(10, paramCaptor.getValue().getValue("id"));
     }
     @Nested
@@ -168,35 +168,35 @@ class PersonRepositoryTest {
         @Test
         void whenNoPage_SQLShouldSelectINSTR() {
             // arrange
-            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any())).thenReturn(List.of(new Person()));
+            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any())).thenReturn(List.of(new User()));
 
             // act
-            personRepo.searchByName("abc",  null);
+            userRepo.searchByName("abc",  null);
 
             // capture
             ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
             ArgumentCaptor<SqlParameterSource> paramCaptor = ArgumentCaptor.forClass(SqlParameterSource.class);
-            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<Person>>any());
+            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<User>>any());
 
             // assert
-            assertEquals("SELECT * FROM person WHERE INSTR(CONCAT(first_name, ' ', last_name), :hint) > 0 ORDER BY id", sqlCaptor.getValue());
+            assertEquals("SELECT * FROM user WHERE INSTR(CONCAT(first_name, ' ', last_name), :hint) > 0 ORDER BY id", sqlCaptor.getValue());
             assertEquals("abc", paramCaptor.getValue().getValue("hint"));
         }
         @Test
         void whenPage_SQLShouldAddLimitAndOffset() {
             // arrange
-            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<Person>>any())).thenReturn(List.of(new Person()));
+            when(jdbcTemplate.query(anyString(), any(SqlParameterSource.class), ArgumentMatchers.<RowMapper<User>>any())).thenReturn(List.of(new User()));
 
             // act
-            personRepo.searchByName("abc",  new PageOptions(10, 1));
+            userRepo.searchByName("abc",  new PageOptions(10, 1));
 
             // capture
             ArgumentCaptor<String> sqlCaptor               = ArgumentCaptor.forClass(String.class);
             ArgumentCaptor<SqlParameterSource> paramCaptor = ArgumentCaptor.forClass(SqlParameterSource.class);
-            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<Person>>any());
+            verify(jdbcTemplate).query(sqlCaptor.capture(), paramCaptor.capture(), ArgumentMatchers.<RowMapper<User>>any());
 
             // assert
-            assertEquals("SELECT * FROM person WHERE INSTR(CONCAT(first_name, ' ', last_name), :hint) > 0 ORDER BY id LIMIT :limit OFFSET :offset", sqlCaptor.getValue());
+            assertEquals("SELECT * FROM user WHERE INSTR(CONCAT(first_name, ' ', last_name), :hint) > 0 ORDER BY id LIMIT :limit OFFSET :offset", sqlCaptor.getValue());
             assertEquals("abc", paramCaptor.getValue().getValue("hint"));
             assertEquals(11, paramCaptor.getValue().getValue("limit"));
             assertEquals(0, paramCaptor.getValue().getValue("offset"));

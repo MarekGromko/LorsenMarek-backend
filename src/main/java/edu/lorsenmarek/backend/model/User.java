@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class Person {
-    private Integer id;
+public class User {
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private String gender;
+    private String pwdDigest;
+    private String title;
 }
