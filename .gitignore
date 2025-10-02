@@ -18,6 +18,7 @@ build/
 *.tmp
 *.bak
 .env
+*.local
 
 # System files
 .DS_Store # macOS
