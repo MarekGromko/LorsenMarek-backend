@@ -1,6 +1,6 @@
 package edu.lorsenmarek.backend.repository;
 import edu.lorsenmarek.backend.model.Serie;
-import edu.lorsenmarek.backend.utility.SerieSearchOption;
+import edu.lorsenmarek.backend.common.SerieSearchOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

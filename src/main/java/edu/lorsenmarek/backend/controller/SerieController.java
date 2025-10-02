@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.repository.SerieRepository;
-import edu.lorsenmarek.backend.utility.SerieSearchOption;
+import edu.lorsenmarek.backend.common.SerieSearchOption;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

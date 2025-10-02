@@ -3,7 +3,7 @@ package edu.lorsenmarek.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.repository.SerieRepository;
-import edu.lorsenmarek.backend.utility.SerieSearchOption;
+import edu.lorsenmarek.backend.common.SerieSearchOption;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;

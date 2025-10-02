@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import edu.lorsenmarek.backend.model.Serie;
-import edu.lorsenmarek.backend.utility.SerieSearchOption;
+import edu.lorsenmarek.backend.common.SerieSearchOption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
