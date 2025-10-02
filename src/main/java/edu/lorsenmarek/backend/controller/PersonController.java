@@ -1,14 +1,9 @@
 package edu.lorsenmarek.backend.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import edu.lorsenmarek.backend.model.Person;
 import edu.lorsenmarek.backend.repository.PersonRepository;
-import edu.lorsenmarek.backend.utility.PageOptions;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.coyote.Response;
+import edu.lorsenmarek.backend.common.PageOptions;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

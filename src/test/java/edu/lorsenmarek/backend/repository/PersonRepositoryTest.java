@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.repository;
 
 import edu.lorsenmarek.backend.model.Person;
-import edu.lorsenmarek.backend.utility.PageOptions;
+import edu.lorsenmarek.backend.common.PageOptions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

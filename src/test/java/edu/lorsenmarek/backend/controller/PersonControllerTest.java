@@ -3,7 +3,7 @@ package edu.lorsenmarek.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.model.Person;
 import edu.lorsenmarek.backend.repository.PersonRepository;
-import edu.lorsenmarek.backend.utility.PageOptions;
+import edu.lorsenmarek.backend.common.PageOptions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

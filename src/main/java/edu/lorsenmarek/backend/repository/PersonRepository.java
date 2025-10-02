@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.repository;
 
 import edu.lorsenmarek.backend.model.Person;
-import edu.lorsenmarek.backend.utility.PageOptions;
+import edu.lorsenmarek.backend.common.PageOptions;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
