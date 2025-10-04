@@ -1,6 +1,12 @@
-DROP TABLE if EXISTS person_serie_history;
-DROP TABLE if EXISTS person;
-DROP TABLE if EXISTS serie;
+DROP TABLE IF EXISTS `user_serie_rating`;
+DROP TABLE IF EXISTS `user_episode_rating`;
+DROP TABLE IF EXISTS `user_episode_history`;
+DROP TABLE IF EXISTS `serie_genre`;
+DROP TABLE IF EXISTS `genre`;
+DROP TABLE IF EXISTS `episode`;
+DROP TABLE IF EXISTS `season`;
+DROP TABLE if EXISTS `serie`;
+DROP TABLE if EXISTS `user`;
 
 CREATE TABLE `user`(
     `id` bigint AUTO_INCREMENT,
@@ -16,7 +22,7 @@ CREATE TABLE `user`(
 CREATE TABLE `serie`(
     `id` bigint AUTO_INCREMENT,
     `title` varchar,
-    `release_ts` timestamp,
+    `released_at` timestamp,
     PRIMARY KEY (`id`)
 );
 
@@ -25,7 +31,7 @@ CREATE TABLE `season` {
     `serie_id` bigint,
     `title` varchar,
     `duration` int,
-    `release_ts` TIMESTAMP,
+    `released_at` TIMESTAMP,
     PRIMARY KEY (`id`),
     CONSTRAINT `season_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
 };
@@ -35,7 +41,7 @@ CREATE TABLE `episode` {
     `season_id` bigint,
     `title` varchar,
     `duration` int,
-    `release_ts` timestamp,
+    `released_at` timestamp,
     PRIMARY KEY (`id`),
     CONSTRAINT `episode_fk_season` FOREIGN KEY (`season_id`) REFERENCES `Season` (`id`) ON DELETE CASCADE
 };
@@ -56,34 +62,34 @@ CREATE TABLE `serie_genre` {
 CREATE TABLE `user_serie_rating` {
     `user_id` bigint,
     `serie_id` bigint,
-    `create_ts` timestamp,
-    `last_modifier_ts` timestamp,
+    `create_at` timestamp,
+    `modified_at` timestamp,
     `rating` int,
     PRIMARY KEY (`user_id`, `serie_id`),
-    CONSTRAINT `user_serie_rating_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`),
-    CONSTRAINT `user_serie_rating_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`)
+    CONSTRAINT `user_serie_rating_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL,
+    CONSTRAINT `user_serie_rating_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
 };
 
 CREATE TABLE `user_episode_rating` {
     `user_id` bigint,
     `episode_id` bigint,
-    `create_ts` timestamp,
-    `last_modifier_ts` timestamp,
+    `create_at` timestamp,
+    `modified_at` timestamp,
     `rating` int,
     PRIMARY KEY (`user_id`, `serie_id`),
-    CONSTRAINT `user_episode_rating_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`),
-    CONSTRAINT `user_episode_rating_fk_episode` FOREIGN KEY (`serie_id`) REFERENCES `Episode` (`id`)
+    CONSTRAINT `user_episode_rating_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL,
+    CONSTRAINT `user_episode_rating_fk_episode` FOREIGN KEY (`serie_id`) REFERENCES `Episode` (`id`) ON DELETE CASCADE
 };
 
 CREATE TABLE `user_episode_history` (
-    `person_id` bigint NOT NULL,
+    `user_id` bigint NOT NULL,
     `serie_id` bigint NOT NULL,
     `last_watch` timestamp NOT NULL DEFAULT current_timestamp(),
     `instance_watch` int NOT NULL DEFAULT 1,
-    PRIMARY KEY (`person_id`,`serie_id`),
+    PRIMARY KEY (`user_id`,`serie_id`),
     KEY `serie_id` (`serie_id`),
-    KEY `person_id` (`person_id`),
-    CONSTRAINT `person_serie_history_fk_person` FOREIGN KEY (`person_id`) REFERENCES `Person` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `person_serie_history_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `user_serie_history_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `user_serie_history_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
 );
 

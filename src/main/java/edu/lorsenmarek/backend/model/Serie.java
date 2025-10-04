@@ -12,6 +12,6 @@ public class Serie {
     @Id
     private Long id;
     private String title;
-    private Instant releaseTs;
+    private Instant releasedAt;
 }
 

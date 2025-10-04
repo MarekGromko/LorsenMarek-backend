@@ -2,7 +2,7 @@ package edu.lorsenmarek.backend.repository;
 
 import edu.lorsenmarek.backend.common.option.SerieSearchOptions;
 import edu.lorsenmarek.backend.model.Serie;
-import edu.lorsenmarek.backend.repository.mapper.SerieMapper;
+import edu.lorsenmarek.backend.converter.jdbc.SerieRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class SerieRepositoryCustomImpl implements SerieRepositoryCustom{
     final private NamedParameterJdbcTemplate jdbc;
-    final private SerieMapper mapper = new SerieMapper();
+    final private SerieRowMapper mapper = new SerieRowMapper();
     SerieRepositoryCustomImpl(final NamedParameterJdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
