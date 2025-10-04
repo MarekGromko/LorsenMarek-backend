@@ -1,4 +1,4 @@
-package edu.lorsenmarek.backend.configs;
+package edu.lorsenmarek.backend.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JacksonException;

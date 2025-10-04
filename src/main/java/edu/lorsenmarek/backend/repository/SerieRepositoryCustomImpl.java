@@ -1,8 +1,8 @@
-package edu.lorsenmarek.backend.repositories;
+package edu.lorsenmarek.backend.repository;
 
-import edu.lorsenmarek.backend.commons.options.SerieSearchOptions;
-import edu.lorsenmarek.backend.models.Serie;
-import edu.lorsenmarek.backend.repositories.mappers.SerieMapper;
+import edu.lorsenmarek.backend.common.option.SerieSearchOptions;
+import edu.lorsenmarek.backend.model.Serie;
+import edu.lorsenmarek.backend.repository.mapper.SerieMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

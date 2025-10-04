@@ -1,6 +1,6 @@
-package edu.lorsenmarek.backend.repositories.mappers;
+package edu.lorsenmarek.backend.repository.mapper;
 
-import edu.lorsenmarek.backend.models.Serie;
+import edu.lorsenmarek.backend.model.Serie;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 

@@ -1,6 +1,6 @@
-package edu.lorsenmarek.backend.repositories;
+package edu.lorsenmarek.backend.repository;
 
-import edu.lorsenmarek.backend.models.User;
+import edu.lorsenmarek.backend.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

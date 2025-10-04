@@ -1,4 +1,4 @@
-package edu.lorsenmarek.backend.controllers;
+package edu.lorsenmarek.backend.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

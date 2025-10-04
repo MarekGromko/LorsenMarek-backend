@@ -1,4 +1,4 @@
-package edu.lorsenmarek.backend.models;
+package edu.lorsenmarek.backend.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
