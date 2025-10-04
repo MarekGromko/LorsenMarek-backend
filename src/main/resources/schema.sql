@@ -62,7 +62,7 @@ CREATE TABLE `serie_genre` {
 CREATE TABLE `user_serie_rating` {
     `user_id` bigint,
     `serie_id` bigint,
-    `create_at` timestamp,
+    `created_at` timestamp,
     `modified_at` timestamp,
     `rating` int,
     PRIMARY KEY (`user_id`, `serie_id`),
@@ -73,7 +73,7 @@ CREATE TABLE `user_serie_rating` {
 CREATE TABLE `user_episode_rating` {
     `user_id` bigint,
     `episode_id` bigint,
-    `create_at` timestamp,
+    `created_at` timestamp,
     `modified_at` timestamp,
     `rating` int,
     PRIMARY KEY (`user_id`, `serie_id`),
