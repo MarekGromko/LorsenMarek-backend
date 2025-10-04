@@ -2,14 +2,11 @@ package edu.lorsenmarek.backend.repositories;
 
 import edu.lorsenmarek.backend.commons.SerieSearchOption;
 import edu.lorsenmarek.backend.models.Serie;
-import org.springframework.jdbc.core.RowMapper;
+import edu.lorsenmarek.backend.repositories.mappers.SerieMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -30,15 +27,5 @@ public class SerieRepositoryCustomImpl implements SerieRepositoryCustom{
         }
 
         return jdbc.query(sql.toString(), params, mapper);
-    }
-    public static class SerieMapper implements RowMapper<Serie> {
-        @Override
-        @NonNull
-        public Serie mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return Serie.builder()
-                    .id(rs.getLong("id"))
-                    .title(rs.getString("title"))
-                    .build();
-        }
     }
 }
