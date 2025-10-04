@@ -1,6 +1,6 @@
 package edu.lorsenmarek.backend.repositories;
 
-import edu.lorsenmarek.backend.commons.SerieSearchOption;
+import edu.lorsenmarek.backend.commons.options.SerieSearchOptions;
 import edu.lorsenmarek.backend.models.Serie;
 import edu.lorsenmarek.backend.repositories.mappers.SerieMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,7 +17,7 @@ public class SerieRepositoryCustomImpl implements SerieRepositoryCustom{
         this.jdbc = jdbc;
     }
     @Override
-    public List<Serie> searchByOption(SerieSearchOption opt) {
+    public List<Serie> searchByOptions(SerieSearchOptions opt) {
         var sql    = new StringBuilder().append("SELECT * FROM serie WHERE 1=1");
         var params = new MapSqlParameterSource();
 
