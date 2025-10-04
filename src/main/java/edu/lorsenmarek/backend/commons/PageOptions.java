@@ -1,4 +1,4 @@
-package edu.lorsenmarek.backend.common;
+package edu.lorsenmarek.backend.commons;
 
 import lombok.*;
 

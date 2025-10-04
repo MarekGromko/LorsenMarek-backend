@@ -1,4 +1,4 @@
-package edu.lorsenmarek.backend.common;
+package edu.lorsenmarek.backend.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +8,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SerieSearchOption {
-    private String genre;
     private String title;
-    private Integer minEpisode;
-
-    public SerieSearchOption() {
-
-    }
 }
