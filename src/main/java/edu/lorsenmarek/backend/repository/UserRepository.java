@@ -1,9 +1,9 @@
 package edu.lorsenmarek.backend.repository;
-import edu.lorsenmarek.backend.model.Serie;
+
+import edu.lorsenmarek.backend.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SerieRepository extends CrudRepository<Serie, Long>, SerieRepositoryCustom {
-
+public interface UserRepository extends CrudRepository<User, Long> {
 }
