@@ -13,7 +13,7 @@ CREATE TABLE `user`(
     `first_name` varchar,
     `last_name` varchar,
     `email` varchar,
-    `tile` varchar,
+    `title` varchar,
     `pwd_digest` varchar,
     PRIMARY KEY (`id`),
     KEY `email` (`email`)
