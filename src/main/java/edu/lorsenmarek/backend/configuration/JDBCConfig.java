@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class JDBCConfiguration extends AbstractJdbcConfiguration {
+public class JDBCConfig extends AbstractJdbcConfiguration {
     @Bean
     @Override
     @NonNull

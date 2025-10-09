@@ -1,5 +1,7 @@
-package edu.lorsenmarek.backend.security;
+package edu.lorsenmarek.backend.configuration;
 
+import edu.lorsenmarek.backend.security.AuthEntryPointJwt;
+import edu.lorsenmarek.backend.security.AuthTokenFilter;
 import edu.lorsenmarek.backend.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class WebSecurityConfig {
-    @Autowired
-    CustomUserDetailsService userDetailsService;
+public class SecurityConfig {
     @Autowired
     private AuthEntryPointJwt authEntryPointJwt;
     @Bean
