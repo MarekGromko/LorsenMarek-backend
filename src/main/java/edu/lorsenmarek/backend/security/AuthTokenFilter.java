@@ -2,6 +2,8 @@ package edu.lorsenmarek.backend.security;
 
 import edu.lorsenmarek.backend.service.CustomUserDetailsService;
 import java.io.IOException;
+
+import edu.lorsenmarek.backend.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
