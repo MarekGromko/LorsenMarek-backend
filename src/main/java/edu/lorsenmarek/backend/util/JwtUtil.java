@@ -13,10 +13,10 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.secret}")
-    private  String jwtSecret;
-    @Value("${jwt.expiration}")
-    private int jwtExpirationMs;
+    @Value("${jwt.secret:123456}")
+    String jwtSecret;
+    @Value("${jwt.expiration:360000}")
+    Integer jwtExpirationMs;
     private SecretKey key;
     @PostConstruct
     public void init(){
