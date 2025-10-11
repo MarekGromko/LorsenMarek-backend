@@ -1,0 +1,2 @@
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `title`, `pwd_digest`, `pwd_attempts`, `pwd_last_attempted_at`) VALUES
+(1, 'test', 'test', 'test', 'test', 'test', 0, '2025-10-11 15:57:21');
