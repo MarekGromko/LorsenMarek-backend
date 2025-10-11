@@ -2,6 +2,8 @@ package edu.lorsenmarek.backend.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import java.time.Instant;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,9 +11,11 @@ import org.springframework.data.annotation.Id;
 public class User {
     @Id
     private Long id;
+    private String title;
     private String firstName;
     private String lastName;
     private String email;
     private String pwdDigest;
-    private String title;
+    private Integer pwdAttempts;
+    private Instant pwdLastAttemptedAt;
 }
