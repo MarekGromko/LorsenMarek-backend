@@ -31,10 +31,11 @@ public class JwtUtil {
                 .compact();
     }
     public String getSubjectFromToken(String raw_token){
-        var token = Jwts.parser()
+        return Jwts.parser()
                 .verifyWith(key).build()
-                .parse(raw_token);
-        return token.getHeader().get("sub").toString();
+                .parseSignedClaims(raw_token)
+                .getPayload()
+                .getSubject();
     }
     public boolean validateJwtToken(String token){
         try{
