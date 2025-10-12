@@ -5,15 +5,17 @@ import edu.lorsenmarek.backend.model.UserSerieRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class UserSerieRatingRepository {
-    final private JdbcTemplate jdbc;
-    final private RowMapper<UserSerieRating> mapper;
-    UserSerieRatingRepository(final JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
+    @Autowired
+    private JdbcTemplate jdbc;
+    final private UserSerieRatingRowMapper mapper;
+    UserSerieRatingRepository() {
         this.mapper = new UserSerieRatingRowMapper();
     }
     public List<UserSerieRating> findByUserId (Long userId) {
@@ -23,7 +25,7 @@ public class UserSerieRatingRepository {
         return jdbc.query("SELECT * FROM user_serie_rating WHERE serie_id = ?", mapper, serieId);
     }
     public Optional<UserSerieRating> findByUserIdAndSerieId(Long userId, Long serieId) {
-        return jdbc.query("SELECT * FROM user_serie_rating WHERE user_id = ? AND serie_id", mapper, userId, serieId).stream().findFirst();
+        return jdbc.query("SELECT * FROM user_serie_rating WHERE user_id = ? AND serie_id = ?", mapper, userId, serieId).stream().findFirst();
     }
     public void insert(UserSerieRating data) {
        jdbc.update("""
