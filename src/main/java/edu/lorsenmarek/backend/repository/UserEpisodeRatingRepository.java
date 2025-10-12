@@ -30,7 +30,7 @@ public class UserEpisodeRatingRepository {
         jdbc.update("""
                 INSERT INTO user_episode_rating
                 (user_id, episode_id, created_at, modified_at, rating)
-                VALUES (?,?,?,?,?""",
+                VALUES (?,?,?,?,?)""",
                 data.getUserId(),
                 data.getEpisodeId(),
                 data.getCreatedAt(),

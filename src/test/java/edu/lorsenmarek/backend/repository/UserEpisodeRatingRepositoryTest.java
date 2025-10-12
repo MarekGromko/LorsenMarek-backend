@@ -121,9 +121,9 @@ class UserEpisodeRatingRepositoryTest {
 
         // assert
         assertEquals("""
-                INSERT INTO user_episode_rating
-                (user_id, episode_id, created_at, modified_at, rating)
-                VALUES (?,?,?,?,?)""",
+                       INSERT INTO user_episode_rating
+                       (user_id, episode_id, created_at, modified_at, rating)
+                       VALUES (?,?,?,?,?)""",
                 sqlCaptor.getValue()
         );
         assertEquals(1L, userIdCaptor.getValue());
