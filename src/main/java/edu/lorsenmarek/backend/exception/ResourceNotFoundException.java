@@ -2,6 +2,9 @@ package edu.lorsenmarek.backend.exception;
 
 import lombok.Getter;
 
+/**
+ * {@link RuntimeException} thrown when a required resource could not be found
+ */
 @Getter
 public class ResourceNotFoundException extends RuntimeException{
     final private String resourceType;
