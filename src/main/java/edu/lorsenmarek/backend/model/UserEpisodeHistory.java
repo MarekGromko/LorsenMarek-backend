@@ -4,6 +4,9 @@ import java.time.Instant;
 
 import lombok.*;
 
+/**
+ * Model describing an {@link Episode} watched by a {@link User}
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

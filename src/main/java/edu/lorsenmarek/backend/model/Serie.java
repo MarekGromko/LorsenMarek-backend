@@ -4,6 +4,9 @@ import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
 
+/**
+ * Model describing an Serie
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

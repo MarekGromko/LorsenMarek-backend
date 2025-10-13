@@ -5,6 +5,9 @@ import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
 
+/**
+ * Model describing an Episode
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

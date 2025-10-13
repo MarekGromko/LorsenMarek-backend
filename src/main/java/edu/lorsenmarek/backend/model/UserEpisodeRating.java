@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.time.Instant;
 
+/**
+ * Model describing a rating to an {@link Episode} by a {@link User}
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
