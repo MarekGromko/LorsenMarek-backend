@@ -56,7 +56,7 @@ public class EpisodeRatingController {
     }
     /**
      * Add or modify a rating to an {@link edu.lorsenmarek.backend.model.Episode}
-     * <p>User most be <b>authenticated</b></p>
+     * <p>User must be <b>authenticated</b></p>
      * <p><br/>
      *     <b>Example:</b>
      *     <pre>{@code
@@ -70,7 +70,7 @@ public class EpisodeRatingController {
      *     }</pre>
      * </p>
      *
-     * @param episodeId id {@link edu.lorsenmarek.backend.model.Episode} id as a path variable
+     * @param episodeId the {@link edu.lorsenmarek.backend.model.Episode} id as a path variable
      * @param ratingReq the {@link RatingRequest} as the request body
      * @param auth the {@link edu.lorsenmarek.backend.security.token.DetailedAuthToken}
      * @return - No Content
@@ -99,7 +99,7 @@ public class EpisodeRatingController {
     }
     /**
      * Delete an episode rating
-     * <p>User most be <b>authenticated</b></p>
+     * <p>User must be <b>authenticated</b></p>
      * <p><br/>
      *     <b>Example:</b>
      *     <pre>{@code
