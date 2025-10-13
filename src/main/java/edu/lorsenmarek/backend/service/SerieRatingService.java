@@ -22,11 +22,11 @@ public class SerieRatingService {
     private UserSerieRatingRepository userSerieRatingRepo;
     @Autowired
     private SerieRepository serieRepo;
-    public void tryRating(Long userId, Long serieId, Integer rating) throws RatingUnseenMediaException {
+    public void tryRating(Long userId, Long serieId, Integer rating) throws RatingUnwatchedMediaException {
         if(!serieRepo.existsById(serieId))
             throw new ResourceNotFoundException("serie", rating.toString());
         if(!userMediaHistoryService.hasWatchedSerie(userId, serieId))
-            throw new RatingUnseenMediaException();
+            throw new RatingUnwatchedMediaException();
 
         userSerieRatingRepo.findByUserIdAndSerieId(userId, serieId).ifPresentOrElse(
                 present -> {

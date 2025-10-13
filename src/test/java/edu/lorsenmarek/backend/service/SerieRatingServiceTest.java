@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.service;
 
 import edu.lorsenmarek.backend.common.MeanValue;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.UserSerieRating;
 import edu.lorsenmarek.backend.repository.SerieRepository;
@@ -14,7 +14,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -65,13 +64,13 @@ class SerieRatingServiceTest {
             });
         }
         @Test
-        void whenSerieIsNotSeen_shouldThrow() {
+        void whenSerieIsNotYetWatched_shouldThrow() {
             // arrange
             when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedSerie(anyLong(), anyLong())).thenReturn(false);
 
             // act & assert
-            assertThrows(RatingUnseenMediaException.class, ()->{
+            assertThrows(RatingUnwatchedMediaException.class, ()->{
                 serieRatingService.tryRating(1L, 1L, 4);
             });
         }

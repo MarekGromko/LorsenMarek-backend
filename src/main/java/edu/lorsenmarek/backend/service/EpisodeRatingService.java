@@ -2,7 +2,7 @@ package edu.lorsenmarek.backend.service;
 
 import edu.lorsenmarek.backend.common.MeanValue;
 import edu.lorsenmarek.backend.converter.jdbc.MeanValueRowMapper;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.UserEpisodeRating;
 import edu.lorsenmarek.backend.repository.EpisodeRepository;
@@ -27,7 +27,7 @@ public class EpisodeRatingService {
         if(!episodeRepo.existsById(episodeId))
             throw new ResourceNotFoundException("episode", rating.toString());
         if(!userMediaHistoryService.hasWatchedEpisode(userId, episodeId))
-            throw new RatingUnseenMediaException();
+            throw new RatingUnwatchedMediaException();
 
         userEpisodeRatingRepo.findByUserIdAndEpisodeId(userId, userId).ifPresentOrElse(
                 present-> {

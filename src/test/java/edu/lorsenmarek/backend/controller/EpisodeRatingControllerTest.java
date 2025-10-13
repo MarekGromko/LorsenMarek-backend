@@ -3,13 +3,12 @@ package edu.lorsenmarek.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.common.MeanValue;
 import edu.lorsenmarek.backend.dto.RatingRequest;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.security.JwtHttpFilter;
 import edu.lorsenmarek.backend.security.token.DetailedAuthToken;
 import edu.lorsenmarek.backend.service.EpisodeRatingService;
-import edu.lorsenmarek.backend.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -131,9 +130,9 @@ class EpisodeRatingControllerTest {
                     .andExpect(jsonPath("code").value("ResourceNotFound"));
         }
         @Test
-        void whenEpisodeDoesExistsButUserHasNotSeenIt_shouldRespondWith403RatingUnseenMedia() throws Exception {
+        void whenEpisodeDoesExistsButUserHasNotYetWatched_shouldRespondWith403RatingUnwatchedMedia() throws Exception {
             // arrange
-            doThrow(new RatingUnseenMediaException())
+            doThrow(new RatingUnwatchedMediaException())
                     .when(mockEpisodeRatingService)
                     .tryRating(anyLong(), anyLong(), anyInt());
 
@@ -142,10 +141,10 @@ class EpisodeRatingControllerTest {
 
             // assert
             result.andExpect(status().isForbidden())
-                    .andExpect(jsonPath("code").value("RatingUnseenMedia"));
+                    .andExpect(jsonPath("code").value("RatingUnwatchedMedia"));
         }
         @Test
-        void whenEpisodeExistsAndEpisodeIsSeen_shouldRespondWith204() throws Exception {
+        void whenEpisodeExistsAndEpisodeIsWatched_shouldRespondWith204() throws Exception {
             // arrange
             doNothing()
                     .when(mockEpisodeRatingService)

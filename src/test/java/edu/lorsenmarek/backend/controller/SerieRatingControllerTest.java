@@ -3,7 +3,7 @@ package edu.lorsenmarek.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.common.MeanValue;
 import edu.lorsenmarek.backend.dto.RatingRequest;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.security.JwtHttpFilter;
@@ -127,9 +127,9 @@ class SerieRatingControllerTest {
                     .andExpect(jsonPath("code").value("ResourceNotFound"));
         }
         @Test
-        void whenSerieDoesExistsButUserHasNotSeenIt_shouldRespondWith403RatingUnseenMedia() throws Exception {
+        void whenSerieDoesExistsButUserHasNotYetWatchedIt_shouldRespondWith403RatingUnwatchedMedia() throws Exception {
             // arrange
-            doThrow(new RatingUnseenMediaException())
+            doThrow(new RatingUnwatchedMediaException())
                     .when(mockSerieRatingService)
                     .tryRating(anyLong(), anyLong(), anyInt());
 
@@ -138,10 +138,10 @@ class SerieRatingControllerTest {
 
             // assert
             result.andExpect(status().isForbidden())
-                    .andExpect(jsonPath("code").value("RatingUnseenMedia"));
+                    .andExpect(jsonPath("code").value("RatingUnwatchedMedia"));
         }
         @Test
-        void whenSerieExistsAndSerieIsSeen_shouldRespondWith204() throws Exception {
+        void whenSerieExistsAndSerieIsWatched_shouldRespondWith204() throws Exception {
             // arrange
             doNothing()
                     .when(mockSerieRatingService)

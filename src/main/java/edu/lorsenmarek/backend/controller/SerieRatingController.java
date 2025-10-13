@@ -3,7 +3,7 @@ package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.dto.ErrorResponse;
 import edu.lorsenmarek.backend.dto.RatingRequest;
 import edu.lorsenmarek.backend.dto.RatingResponse;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.service.SerieRatingService;
@@ -56,10 +56,10 @@ public class SerieRatingController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(RatingUnseenMediaException.class)
-    public ResponseEntity<ErrorResponse> ratingUnseenMedia() {
+    @ExceptionHandler(RatingUnwatchedMediaException.class)
+    public ResponseEntity<ErrorResponse> ratingUnwatchedMedia() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-            new ErrorResponse("RatingUnseenMedia", "Can not rate a serie that isn't already watch")
+            new ErrorResponse("RatingUnwatchedMedia", "Can not rate a serie that is not yet watched")
         );
     }
     @ExceptionHandler(ResourceNotFoundException.class)

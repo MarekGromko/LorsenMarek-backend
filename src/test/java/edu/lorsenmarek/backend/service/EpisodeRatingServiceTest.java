@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.service;
 
 import edu.lorsenmarek.backend.common.MeanValue;
-import edu.lorsenmarek.backend.exception.RatingUnseenMediaException;
+import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.UserEpisodeRating;
 import edu.lorsenmarek.backend.repository.EpisodeRepository;
@@ -66,13 +66,13 @@ class EpisodeRatingServiceTest {
             });
         }
         @Test
-        void whenEpisodeIsNotSeen_shouldThrow() {
+        void whenEpisodeIsNotYetWatched_shouldThrow() {
             // arrange
             when(mockEpisodeRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedEpisode(anyLong(), anyLong())).thenReturn(false);
 
             // act & assert
-            assertThrows(RatingUnseenMediaException.class, ()->{
+            assertThrows(RatingUnwatchedMediaException.class, ()->{
                 episodeRatingService.tryRating(1L, 1L, 4);
             });
         }
