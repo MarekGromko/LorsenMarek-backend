@@ -1,13 +1,17 @@
 package edu.lorsenmarek.backend.converter.jdbc;
 
 import edu.lorsenmarek.backend.model.UserEpisodeRating;
-import edu.lorsenmarek.backend.model.UserSerieRating;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Implementation of {@link RowMapper} for {@link UserEpisodeRating}
+ *
+ * @author Marek Gromko
+ */
 public class UserEpisodeRatingRowMapper implements RowMapper<UserEpisodeRating> {
     @Override
     @NonNull

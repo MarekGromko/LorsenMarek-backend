@@ -7,6 +7,11 @@ import org.springframework.lang.NonNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Implementation of {@link RowMapper} for {@link UserSerieRating}
+ *
+ * @author Marek Gromko
+ */
 public class UserSerieRatingRowMapper implements RowMapper<UserSerieRating> {
     @Override
     @NonNull
