@@ -1,8 +1,7 @@
 package edu.lorsenmarek.backend.configuration;
 
 import edu.lorsenmarek.backend.security.EmailPasswordAuthenticationProvider;
-import edu.lorsenmarek.backend.security.JwtTokenFilter;
-import edu.lorsenmarek.backend.util.JwtUtil;
+import edu.lorsenmarek.backend.security.JwtHttpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    JwtHttpFilter jwtHttpFilter;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -46,7 +45,7 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**", "/public/**").permitAll()
                                 .anyRequest().authenticated()
                 );
-        httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtHttpFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }
