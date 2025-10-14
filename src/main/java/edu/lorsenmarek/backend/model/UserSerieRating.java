@@ -1,5 +1,6 @@
 package edu.lorsenmarek.backend.model;
 
+import edu.lorsenmarek.backend.annotation.CompositeId;
 import lombok.*;
 
 import java.time.Instant;
@@ -12,7 +13,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @Builder
 public class UserSerieRating {
+    @CompositeId
     private Long userId;
+    @CompositeId
     private Long serieId;
     private Instant createdAt;
     private Instant modifiedAt;

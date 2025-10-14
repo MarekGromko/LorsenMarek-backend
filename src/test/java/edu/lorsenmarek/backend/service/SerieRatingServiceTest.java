@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static edu.lorsenmarek.backend.repository.UserSerieRatingRepository.Ids;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -79,7 +80,7 @@ class SerieRatingServiceTest {
             // arrange
             when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedSerie(anyLong(), anyLong())).thenReturn(true);
-            when(mockUserSerieRatingRepo.findByUserIdAndSerieId(anyLong(), anyLong())).thenReturn(Optional.of(USRStub));
+            when(mockUserSerieRatingRepo.findOneByIds(any())).thenReturn(Optional.of(USRStub));
 
             // act
             serieRatingService.tryRating(1L, 2L, 4);
@@ -99,7 +100,7 @@ class SerieRatingServiceTest {
             // arrange
             when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedSerie(anyLong(), anyLong())).thenReturn(true);
-            when(mockUserSerieRatingRepo.findByUserIdAndSerieId(anyLong(), anyLong())).thenReturn(Optional.empty());
+            when(mockUserSerieRatingRepo.findOneByIds(any(Ids.class))).thenReturn(Optional.empty());
 
             // act
             serieRatingService.tryRating(1L, 2L, 4);
@@ -118,26 +119,25 @@ class SerieRatingServiceTest {
     @Test
     void deleteRating_shouldCallUserSerieRatingRepoDelete() {
         // arrange
-        when(mockUserSerieRatingRepo.deleteByUserIdAndSerieId(anyLong(), anyLong())).thenReturn(1);
+        when(mockUserSerieRatingRepo.deleteByIds(any(Ids.class))).thenReturn(1);
 
         // act
         serieRatingService.deleteRating(1L, 2L);
 
         // capture
-        ArgumentCaptor<Long> userIdCaptor   = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Long> serieIdCaptor  = ArgumentCaptor.forClass(Long.class);
-        verify(mockUserSerieRatingRepo).deleteByUserIdAndSerieId(userIdCaptor.capture(), serieIdCaptor.capture());
+        var idsCaptor   = ArgumentCaptor.forClass(Ids.class);
+        verify(mockUserSerieRatingRepo).deleteByIds(idsCaptor.capture());
 
         // assert
-        assertEquals(userIdCaptor.getValue(), 1L);
-        assertEquals(serieIdCaptor.getValue(), 2L);
+        assertEquals(idsCaptor.getValue().userId(), 1L);
+        assertEquals(idsCaptor.getValue().serieId(), 2L);
     }
     @Nested
     class GetMeanRating {
         @Test
         void whenSerieDoesNotExist_shouldThrow() {
             // arrange
-            when(mockUserSerieRatingRepo.findBySerieId(anyLong())).thenReturn(Collections.emptyList());
+            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(Collections.emptyList());
 
             // act & assert
             assertThrows(ResourceNotFoundException.class, ()->{
@@ -148,7 +148,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieExistsAndNoRating_shouldGetMeanValueWithZeroCount() {
             // arrange
-            when(mockUserSerieRatingRepo.findBySerieId(anyLong())).thenReturn(List.of(USRStub));
+            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),
@@ -164,7 +164,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieAndRatingExists_shouldGetMeanValue() {
             // arrange
-            when(mockUserSerieRatingRepo.findBySerieId(anyLong())).thenReturn(List.of(USRStub));
+            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),

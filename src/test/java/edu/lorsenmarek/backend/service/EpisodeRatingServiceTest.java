@@ -23,12 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static edu.lorsenmarek.backend.repository.UserEpisodeRatingRepository.Ids;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class EpisodeRatingServiceTest {
@@ -81,7 +79,7 @@ class EpisodeRatingServiceTest {
             // arrange
             when(mockEpisodeRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedEpisode(anyLong(), anyLong())).thenReturn(true);
-            when(mockUserEpisodeRatingRepo.findByUserIdAndEpisodeId(anyLong(), anyLong())).thenReturn(Optional.of(UERStub));
+            when(mockUserEpisodeRatingRepo.findOneByIds(any(Ids.class))).thenReturn(Optional.of(UERStub));
 
             // act
             episodeRatingService.tryRating(1L, 2L, 4);
@@ -101,7 +99,7 @@ class EpisodeRatingServiceTest {
             // arrange
             when(mockEpisodeRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserMediaHistoryService.hasWatchedEpisode(anyLong(), anyLong())).thenReturn(true);
-            when(mockUserEpisodeRatingRepo.findByUserIdAndEpisodeId(anyLong(), anyLong())).thenReturn(Optional.empty());
+            when(mockUserEpisodeRatingRepo.findOneByIds(any(Ids.class))).thenReturn(Optional.empty());
 
             // act
             episodeRatingService.tryRating(1L, 2L, 4);
@@ -120,26 +118,25 @@ class EpisodeRatingServiceTest {
     @Test
     void deleteRating_shouldCallUserEpisodeRatingRepoDelete() {
         // arrange
-        when(mockUserEpisodeRatingRepo.deleteByUserIdAndEpisodeId(anyLong(), anyLong())).thenReturn(1);
+        when(mockUserEpisodeRatingRepo.deleteByIds(any(Ids.class))).thenReturn(1);
 
         // act
         episodeRatingService.deleteRating(1L, 2L);
 
         // capture
-        ArgumentCaptor<Long> userIdCaptor   = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Long> episodeIdCaptor  = ArgumentCaptor.forClass(Long.class);
-        verify(mockUserEpisodeRatingRepo).deleteByUserIdAndEpisodeId(userIdCaptor.capture(), episodeIdCaptor.capture());
+        var idsCaptor = ArgumentCaptor.forClass(Ids.class);
+        verify(mockUserEpisodeRatingRepo).deleteByIds(idsCaptor.capture());
 
         // assert
-        assertEquals(userIdCaptor.getValue(), 1L);
-        assertEquals(episodeIdCaptor.getValue(), 2L);
+        assertEquals(idsCaptor.getValue().userId(), 1L);
+        assertEquals(idsCaptor.getValue().episodeId(), 2L);
     }
     @Nested
     class GetMeanRating {
         @Test
         void whenEpisodeDoesNotExist_shouldThrow() {
             // arrange
-            when(mockUserEpisodeRatingRepo.findByEpisodeId(anyLong())).thenReturn(Collections.emptyList());
+            when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(Collections.emptyList());
 
             // act & assert
             assertThrows(ResourceNotFoundException.class, ()->{
@@ -150,7 +147,7 @@ class EpisodeRatingServiceTest {
         @Test
         void whenEpisodeExistsAndNoRating_shouldGetMeanValueWithZeroCount() {
             // arrange
-            when(mockUserEpisodeRatingRepo.findByEpisodeId(anyLong())).thenReturn(List.of(UERStub));
+            when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(UERStub));
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),
@@ -166,7 +163,7 @@ class EpisodeRatingServiceTest {
         @Test
         void whenSerieAndRatingExists_shouldGetMeanValue() {
             // arrange
-            when(mockUserEpisodeRatingRepo.findByEpisodeId(anyLong())).thenReturn(List.of(UERStub));
+            when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(UERStub));
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),

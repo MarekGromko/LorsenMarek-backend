@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import static edu.lorsenmarek.backend.repository.UserSerieRatingRepository.Ids;
 import java.time.Instant;
 
 @Service
@@ -28,7 +29,7 @@ public class SerieRatingService {
         if(!userMediaHistoryService.hasWatchedSerie(userId, serieId))
             throw new RatingUnwatchedMediaException();
 
-        userSerieRatingRepo.findByUserIdAndSerieId(userId, serieId).ifPresentOrElse(
+        userSerieRatingRepo.findOneByIds(new Ids(userId, serieId)).ifPresentOrElse(
                 present -> {
                     present.setModifiedAt(Instant.now());
                     present.setRating(rating);
@@ -47,10 +48,10 @@ public class SerieRatingService {
         );
     }
     public void deleteRating(Long userId, Long serieId) {
-        userSerieRatingRepo.deleteByUserIdAndSerieId(userId, serieId);
+        userSerieRatingRepo.deleteByIds(new Ids(userId, serieId));
     }
     public MeanValue getMeanRating(Long serieId) {
-        if(userSerieRatingRepo.findBySerieId(serieId).isEmpty())
+        if(userSerieRatingRepo.findByIds(new Ids(null, serieId)).isEmpty())
             throw new ResourceNotFoundException("serie", serieId.toString());
 
         return jdbc.query("""
