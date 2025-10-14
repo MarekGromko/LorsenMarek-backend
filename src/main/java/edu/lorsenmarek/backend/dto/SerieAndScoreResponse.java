@@ -22,7 +22,7 @@ import edu.lorsenmarek.backend.model.Serie;
  * @param score the serie score
  * @author Marek Gromko
  */
-public record SerieWithTrendingScoreResponse(
+public record SerieAndScoreResponse(
         SerieSummaryResponse serie,
         Double score
 ){
@@ -32,7 +32,7 @@ public record SerieWithTrendingScoreResponse(
      * @param serie the {@link Serie} to populate the {@link SerieSummaryResponse}
      * @param score the serie score
      */
-    public SerieWithTrendingScoreResponse(Serie serie, Double score) {
+    public SerieAndScoreResponse(Serie serie, Double score) {
         this(new SerieSummaryResponse(serie), score);
     }
 }

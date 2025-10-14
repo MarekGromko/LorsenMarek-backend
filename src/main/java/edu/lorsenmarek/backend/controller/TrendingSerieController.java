@@ -1,17 +1,12 @@
 package edu.lorsenmarek.backend.controller;
 
-import edu.lorsenmarek.backend.dto.RatingResponse;
-import edu.lorsenmarek.backend.dto.SerieSummaryResponse;
-import edu.lorsenmarek.backend.dto.SerieWithTrendingScoreResponse;
-import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
+import edu.lorsenmarek.backend.dto.*;
 import edu.lorsenmarek.backend.service.TrendingSerieService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +14,7 @@ import java.util.List;
  * REST controller managing trending functionalities for {@link edu.lorsenmarek.backend.model.Serie}
  *
  * @see TrendingSerieService
- * @see SerieWithTrendingScoreResponse
+ * @see SerieAndScoreResponse
  * @author Marek Gromko
  */
 @Controller
@@ -52,22 +47,14 @@ public class TrendingSerieController {
      *     }</pre>
      * </p>
      *
-     * @return Ok with a {@link List} of {@link SerieWithTrendingScoreResponse} for body
+     * @return Ok with a {@link List} of {@link SerieAndScoreResponse} for body
      */
     @GetMapping
-    public ResponseEntity<List<SerieWithTrendingScoreResponse>> getTrendingSerie() {
+    public ResponseEntity<List<SerieAndScoreResponse>> getTrendingSerie() {
         var results = trendingSerieService.getTrendingSeries();
-        var response = results.stream().map(sts->{
-            var serieSummary = new SerieSummaryResponse(
-                    sts.serie().getId(),
-                    sts.serie().getTitle(),
-                    sts.serie().getReleasedAt()
-            );
-            return new SerieWithTrendingScoreResponse(
-                    serieSummary,
-                    sts.score()
-            );
-        }).toList();
+        var response = results.stream()
+                .map(sts->new SerieAndScoreResponse(sts.serie(), sts.score()))
+                .toList();
         return ResponseEntity.ok(response);
     }
 }
