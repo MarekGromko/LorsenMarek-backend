@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS `user_serie_history`;
 DROP TABLE IF EXISTS `user_serie_rating`;
 DROP TABLE IF EXISTS `user_episode_rating`;
 DROP TABLE IF EXISTS `user_episode_history`;
@@ -94,5 +95,21 @@ CREATE TABLE `user_episode_history` (
     KEY `user_id` (`user_id`),
     CONSTRAINT `user_episode_history_fk_user` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE,
     CONSTRAINT `user_episode_history_fk_episode` FOREIGN KEY (`episode_id`) REFERENCES `Episode` (`id`) ON DELETE CASCADE
+);
+
+-- view creation
+CREATE VIEW `user_serie_history` AS (
+    SELECT
+        `serie`.`id`                AS `serie_id`,
+        `history`.`user_id`         AS `user_id`,
+        MAX(`history`.`watched_at`) AS `watched_at`
+    FROM
+        `user_episode_history`  as `history`
+        INNER JOIN `episode`    ON `history`.`episode_id` = `episode`.`id`
+        INNER JOIN `season`     ON `episode`.`season_id` = `season`.`id`
+        INNER JOIN `serie`      ON `season`.`serie_id` = `serie`.`id`
+    GROUP BY
+        `serie`.`id`,
+        `history`.`user_id`
 );
 
