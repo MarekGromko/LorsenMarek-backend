@@ -15,12 +15,30 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * JWT authentication filter that intercepts incoming HTTP request
+ * and validates the JWT token if present
+ *  @author Marek Gromko
+ * @version 1.0
+ */
 @Component
 public class JwtHttpFilter extends OncePerRequestFilter {
     @Autowired
     JwtUtil jwtUtil;
     @Autowired
     UserRepository userRepo;
+
+    /**
+     * Filters each HTTP request to perform JWT-based authentication.
+     *
+     * <p>If a valid JWT is found in the authorization header this method retrieves the corresponding user and sets a {@link DetailedAuthToken}.</p>
+     *
+     * @param request the http request
+     * @param response the http response
+     * @param filterChain the filter chain
+     * @throws ServletException in case of servlet errors
+     * @throws IOException case od IO errors
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -37,6 +55,13 @@ public class JwtHttpFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }
     }
+
+    /**
+     * Extracts the JWT token from the Authorization header of the HTTP request.
+     *
+     * @param request the http request
+     * @return the JWT token if present and starts with "Bearer", otherwise {@code null}
+     */
     private String extractJwt(HttpServletRequest request){
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")){

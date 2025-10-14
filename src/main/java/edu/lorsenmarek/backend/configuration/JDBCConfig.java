@@ -11,8 +11,19 @@ import org.springframework.lang.NonNull;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Configuration class for customizing JDBC data type conversion in Spring Data JDBC.
+ * This class extends {@link AbstractJdbcConfiguration} to provide additional converters that allow seamless reading and writing of {@link java.time.Instant}
+ *  @author Marek Gromko
+ * @version 1.0
+ */
 @Configuration
 public class JDBCConfig extends AbstractJdbcConfiguration {
+    /**
+     * Defines custom converters for reading and writing database values
+     * @return a {@link JdbcCustomConversions} bean that includes the custom converters
+     * used by Spring Data JDBC during persistence operation
+     */
     @Bean
     @Override
     @NonNull
