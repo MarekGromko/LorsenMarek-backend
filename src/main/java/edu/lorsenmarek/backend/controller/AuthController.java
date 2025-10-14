@@ -17,9 +17,19 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 
+/**
+ *  Controller responsible for authentication and user registration endpoints.
+ *  <p>
+ *      This class handles user login, signup (registration),
+ *      and exception handling related to authentication errors.
+ *  </p>
+ *
+ * @author Lorsen Lamour
+ * @version 1.0
+ *
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -31,12 +41,28 @@ public class AuthController {
     JwtUtil jwtUtil;
     @Autowired
     PasswordEncoder pwdEncoder;
+
+    /**
+     * Authentication a user using email and password.
+     * @param req the login request containing user credentials.
+     * @return a {@link ResponseEntity} containing a JWT token if authentication is successful.
+     * @throws BadCredentialsException if password is incorrect.
+     * @throws LockedException if the user account is locked.
+     */
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> emailPasswordLogin(@RequestBody EmailPasswordLoginRequest req){
         var token = new EmailPasswordAuthToken(req.email(), req.password());
         authenticationManager.authenticate(token);
         return ResponseEntity.ok(new JwtResponse(jwtUtil.generateToken(req.email())));
     }
+
+    /**
+     * Registers a new user in the system.
+     * @param req the signup request containing user information (email,name,title,password).
+     * @return a {@link ResponseEntity} with no content if registration is successful,
+     * or a conflict status if the email is already in use.
+     */
+
     @PostMapping("/signin")
     public ResponseEntity<?> emailPasswordSignin(@RequestBody EmailPasswordSigninRequest req) {
         var result = userRepo.findByEmail(req.email());
@@ -55,6 +81,11 @@ public class AuthController {
         userRepo.save(newUser);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Handles locked account exception.
+     * @return a {@link ResponseEntity} containing an error response with a forbidden status.
+     */
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<ErrorResponse> lockedException() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(
@@ -62,6 +93,12 @@ public class AuthController {
                 "User is locked"
         ));
     }
+
+    /**
+     * Handles authentication failure due to incorrect password.
+     * @return a {@link ResponseEntity} with a forbidden status and an error message.
+     */
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> badCredentialsException() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(
@@ -69,6 +106,11 @@ public class AuthController {
                 "Passwords do not match"
         ));
     }
+
+    /**
+     * Handles the case where authentication credentials are missing or invalid.
+     * @return a {@link ResponseEntity} with a not found status and an error message.
+     */
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
     public ResponseEntity<ErrorResponse> credentialsNotFound() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
