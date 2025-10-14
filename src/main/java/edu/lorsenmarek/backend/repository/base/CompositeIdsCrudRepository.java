@@ -44,7 +44,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
      * @return {@link RelationalPersistentEntity<T>}
      */
     final protected RelationalPersistentEntity<?> extractEntity() { return jdbcMap.getPersistentEntity(tclass); }
-
     /**
      * Extract the {@link CompositeId} from a model
      *
@@ -62,7 +61,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
             throw new IllegalArgumentException("Object %s has less than two @CompositeId field".formatted(entity.getName()));
         return ids;
     }
-
     /**
      * Find all rows matching the composite ids
      * <p>Will ignore keys that are <code>null</code></p>
@@ -101,7 +99,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
     public Optional<T> findOneByIds(CI ids) {
         return findByIds(ids).stream().findFirst();
     }
-
     /**
      * Persist a new {@link T}
      *
@@ -122,7 +119,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         jdbc.update(sql, params);
     }
-
     /**
      * Update a {@link T} where its composite ids match
      * <p>Will do nothing if any composite ids are <code>null</code></p>
@@ -159,7 +155,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         return jdbc.update(sql, Stream.concat(params.stream(), idsParams.stream()).toList());
     }
-
     /**
      * Delete a row where it matches a composite ids
      *
@@ -187,7 +182,6 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         return jdbc.update(sql, idsParams);
     }
-
     /**
      * Method called when the repository which to extract the value of a {@link CI} matching a
      * fields annotated with {@link CompositeId}

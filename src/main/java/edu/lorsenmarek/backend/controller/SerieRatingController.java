@@ -1,19 +1,16 @@
 package edu.lorsenmarek.backend.controller;
 
-import edu.lorsenmarek.backend.dto.ErrorResponse;
-import edu.lorsenmarek.backend.dto.RatingRequest;
-import edu.lorsenmarek.backend.dto.RatingResponse;
-import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
-import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
+import edu.lorsenmarek.backend.dto.*;
+import edu.lorsenmarek.backend.exception.*;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.service.SerieRatingService;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller managing rating functionalities for {@link edu.lorsenmarek.backend.model.Serie}

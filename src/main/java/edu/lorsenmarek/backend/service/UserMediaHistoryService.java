@@ -1,25 +1,13 @@
 package edu.lorsenmarek.backend.service;
 
-import edu.lorsenmarek.backend.converter.jdbc.UserEpisodeHistoryRowMapper;
-import edu.lorsenmarek.backend.model.UserEpisodeHistory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
-import static java.sql.Types.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class UserMediaHistoryService {
-    final private JdbcTemplate jdbc;
-    //final private RowMapper<UserEpisodeHistory> mapper;
-    UserMediaHistoryService(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-        //this.mapper = new UserEpisodeHistoryRowMapper();
-    }
+    @Autowired
+    private JdbcTemplate jdbc;
     public boolean hasWatchedSerie(Long userId, Long serieId) {
         return jdbc.queryForObject("""
                 SELECT EXISTS (

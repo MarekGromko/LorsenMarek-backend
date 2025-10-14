@@ -3,8 +3,7 @@ package edu.lorsenmarek.backend.controller;
 import edu.lorsenmarek.backend.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Global Controller to customize the behaviors of common pipeline errors
