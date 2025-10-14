@@ -11,7 +11,7 @@ import java.time.Instant;
 
 /**
  * Configuration class for customizing Jackson JSON .
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  *
  */

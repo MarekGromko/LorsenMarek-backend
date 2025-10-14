@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * </ul>
  *  All other endpoints require authentication with a valid JWT token
  *
- * @author Lorsen Lamour
+ * @author Marek Gromko
  * @version 1.0
  */
 

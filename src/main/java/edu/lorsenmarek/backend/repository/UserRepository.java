@@ -9,6 +9,7 @@ import java.util.Optional;
 /**
  * Repository interface for managing {@link User} entities.
  * @author Lorsen Lamour
+ *  @author Marek Gromko
  *
  */
 @Repository

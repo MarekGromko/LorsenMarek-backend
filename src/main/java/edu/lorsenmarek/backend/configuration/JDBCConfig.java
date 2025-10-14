@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Configuration class for customizing JDBC data type conversion in Spring Data JDBC.
  * This class extends {@link AbstractJdbcConfiguration} to provide additional converters that allow seamless reading and writing of {@link java.time.Instant}
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  */
 @Configuration
