@@ -8,6 +8,7 @@ import edu.lorsenmarek.backend.service.TrendingSerieService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,8 @@ import java.util.List;
  * @author Marek Gromko
  */
 @Controller
-@RequestMapping("/trending/serie")
+@PermitAll
+@RequestMapping("/public/trending/serie")
 public class TrendingSerieController {
     @Autowired
     TrendingSerieService trendingSerieService;
@@ -53,7 +55,6 @@ public class TrendingSerieController {
      * @return Ok with a {@link List} of {@link SerieWithTrendingScoreResponse} for body
      */
     @GetMapping
-    @PermitAll
     public ResponseEntity<List<SerieWithTrendingScoreResponse>> getTrendingSerie() {
         var results = trendingSerieService.getTrendingSeries();
         var response = results.stream().map(sts->{
