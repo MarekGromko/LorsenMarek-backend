@@ -12,14 +12,11 @@ public class UserMediaHistoryService {
         return jdbc.queryForObject("""
                 SELECT EXISTS (
                     SELECT 1
-                    FROM
-                        user_episode_history AS history
-                        INNER JOIN episode ON history.episode_id = episode.id
-                        INNER JOIN season ON episode.season_id = season.id
-                        INNER JOIN serie ON season.serie_id = serie.id
+                    FROM user_serie_history
                     WHERE
-                        history.user_id = ? AND
-                        serie.id = ?
+                        user_id = ? AND
+                        serie_id = ?
+                    LIMIT 1
                 ) AS "exists"
                 """,
                 Boolean.class,
@@ -35,6 +32,7 @@ public class UserMediaHistoryService {
                     WHERE
                         user_id = ? AND
                         serie_id = ?
+                    LIMIT 1
                 ) AS "exists"
                 """,
                 Boolean.class,
