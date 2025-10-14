@@ -3,7 +3,6 @@ package edu.lorsenmarek.backend.service;
 import edu.lorsenmarek.backend.converter.jdbc.SerieRowMapper;
 import edu.lorsenmarek.backend.model.Serie;
 import edu.lorsenmarek.backend.util.DurationCodecUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,21 +32,22 @@ public class TrendingSerieService {
             );
         }
     }
-    @Autowired
-    JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
     private final Duration COMPUTE_INTERVAL;
-    private final double VIEW_FACTOR;
-    private final double RATING_FACTOR;
-    private final int LIMIT;
+    private final Double VIEW_FACTOR;
+    private final Double RATING_FACTOR;
+    private final Integer LIMIT;
     private final RowMapper<SerieTrendingScore> serieTrendingScoreMapper;
     private List<SerieTrendingScore> trendingSeries;
     private Instant lastUpdate;
     TrendingSerieService(
+            JdbcTemplate jdbc,
             @Value("${services.trending-serie.view-factor:1}") final Double viewFactor,
             @Value("${services.trending-serie.rating-factor:1.0}") final Double ratingFactor,
             @Value("${services.trending-serie.limit:10}") final Integer limit,
             @Value("${services.trending-serie.compute-interval:PT10M}") final String computeInterval
     ) {
+        this.jdbc = jdbc;
         VIEW_FACTOR = viewFactor;
         RATING_FACTOR = ratingFactor;
         LIMIT = limit;
