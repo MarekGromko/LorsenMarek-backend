@@ -1,7 +1,9 @@
 package edu.lorsenmarek.backend.controller;
 
+import edu.lorsenmarek.backend.dto.RatingResponse;
 import edu.lorsenmarek.backend.dto.SerieSummaryResponse;
 import edu.lorsenmarek.backend.dto.SerieWithTrendingScoreResponse;
+import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.service.TrendingSerieService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +17,44 @@ import java.util.List;
 /**
  * REST controller managing trending functionalities for {@link edu.lorsenmarek.backend.model.Serie}
  *
+ * @see TrendingSerieService
+ * @see SerieWithTrendingScoreResponse
  * @author Marek Gromko
  */
 @Controller
-@RequestMapping("/serie/trending")
+@RequestMapping("/trending/serie")
 public class TrendingSerieController {
     @Autowired
     TrendingSerieService trendingSerieService;
+    /**
+     * Get the mean rating (sum & count) for a given serie
+     * <p><b>This route is permitted for all</b></p>
+     * <p><br/>
+     *     <b>Example: </b>
+     *     <pre>{@code
+     *      // Request
+     *      GET /trending/series
+     *      // Response
+     *      HTTP 200 Ok
+     *      [
+     *          {
+     *              "score": 12.0,
+     *              "serie": {
+     *                  "id": 1,
+     *                  "title": "Some Title",
+     *                  "releasedAt": "2020-12-32 03:45:20"
+     *              }
+     *          },
+     *          ...
+     *      ]
+     *     }</pre>
+     * </p>
+     *
+     * @return Ok with a {@link List} of {@link SerieWithTrendingScoreResponse} for body
+     */
     @GetMapping
     @PermitAll
-    public ResponseEntity<List<SerieWithTrendingScoreResponse>> GetTrendingSerie() {
+    public ResponseEntity<List<SerieWithTrendingScoreResponse>> getTrendingSerie() {
         var results = trendingSerieService.getTrendingSeries();
         var response = results.stream().map(sts->{
             var serieSummary = new SerieSummaryResponse(
