@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS `user_serie_history`;
 DROP TABLE IF EXISTS `user_serie_rating`;
 DROP TABLE IF EXISTS `user_episode_rating`;
 DROP TABLE IF EXISTS `user_episode_history`;
