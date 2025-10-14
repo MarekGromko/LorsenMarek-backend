@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service for tracking which media series or episode a user has watched.
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  */
 @Service

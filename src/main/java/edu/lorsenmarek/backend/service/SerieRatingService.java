@@ -15,7 +15,7 @@ import java.time.Instant;
 
 /**
  * Service for managing rating of {@link edu.lorsenmarek.backend.model.Serie}BY USERS.
- * @author Lorsen Lamour
+ * @author Marek Gromko
  * @version 1.0
  */
 @Service

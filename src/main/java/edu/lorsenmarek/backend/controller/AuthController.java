@@ -27,6 +27,7 @@ import java.time.Instant;
  *  </p>
  *
  * @author Lorsen Lamour
+ * @author Marek Gromko
  * @version 1.0
  *
  */

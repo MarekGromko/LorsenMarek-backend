@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Implementation of {@link SerieRepositoryCustom} that provides
  * dynamic SQL search for {@link Serie} entities.
- * @author Lorsen Lamour
+ * @author Marek Gromko
  * @version 1.0
  */
 @Repository

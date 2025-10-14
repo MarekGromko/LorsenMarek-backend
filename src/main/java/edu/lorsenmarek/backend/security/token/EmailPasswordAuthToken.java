@@ -5,7 +5,7 @@ import java.util.Collections;
 
 /**
  * Authentication token for email and password
- * @author Lorsen Lamour
+ * @author Marek Gromko
  * @version 1.0
  */
 public class EmailPasswordAuthToken extends AbstractAuthenticationToken {

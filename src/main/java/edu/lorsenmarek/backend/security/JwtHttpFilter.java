@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * JWT authentication filter that intercepts incoming HTTP request
  * and validates the JWT token if present
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  */
 @Component

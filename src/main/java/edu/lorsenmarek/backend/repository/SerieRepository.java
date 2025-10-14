@@ -5,8 +5,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for managing {@link Serie} entities.
- * @author Lorsen Lamour
- * @version 1.0
+ *  @author Marek Gromko
  */
 @Repository
 public interface SerieRepository extends CrudRepository<Serie, Long>, SerieRepositoryCustom {

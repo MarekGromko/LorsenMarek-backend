@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * Custom {@link AbstractAuthenticationToken} that contained detailed user information.
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  */
 public class DetailedAuthToken extends AbstractAuthenticationToken {

@@ -17,7 +17,7 @@ import java.util.Collections;
 
 /**
  * Authentication provider that handles user authentication form email and password.
- * @author Lorsen Lamour
+ *  @author Marek Gromko
  * @version 1.0
  *
  * <p>This class implements {@link AuthenticationProvider} and performs the following: </p>
