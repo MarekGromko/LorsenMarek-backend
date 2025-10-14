@@ -12,6 +12,13 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Abstract repository implementing base CRUD functionalities for table with composite primary keys
+ *
+ * @param <T> The Model type
+ * @param <CI> The Composite Ids type
+ * @author Marek Gromko
+ */
 abstract public class CompositeIdsCrudRepository<T, CI> {
     final protected JdbcTemplate jdbc;
     final protected JdbcMappingContext jdbcMap;
@@ -31,8 +38,23 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
                 .getGeneric(0)
                 .resolve();
     }
+    /**
+     * Extract the PersistentEntity describing the model
+     *
+     * @return {@link RelationalPersistentEntity<T>}
+     */
     final protected RelationalPersistentEntity<?> extractEntity() { return jdbcMap.getPersistentEntity(tclass); }
-    final protected List<RelationalPersistentProperty> extractIdsProperties(RelationalPersistentEntity<?> entity) {
+
+    /**
+     * Extract the {@link CompositeId} from a model
+     *
+     * @param entity the {@link RelationalPersistentEntity<T>} to extract {@link CompositeId} fields
+     * @return {@link List} of {@link RelationalPersistentProperty}, the composite ids of the models
+     * @throws IllegalArgumentException if there is less than two {@link CompositeId} fields defined;
+     */
+    final protected List<RelationalPersistentProperty> extractIdsProperties(
+            RelationalPersistentEntity<?> entity
+    ) throws IllegalArgumentException {
         var ids = StreamSupport
                 .stream(entity.getPersistentProperties(CompositeId.class).spliterator(), false)
                 .toList();
@@ -40,6 +62,15 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
             throw new IllegalArgumentException("Object %s has less than two @CompositeId field".formatted(entity.getName()));
         return ids;
     }
+
+    /**
+     * Find all rows matching the composite ids
+     * <p>Will ignore keys that are <code>null</code></p>
+     * <p>Will return an empty list if both keys are null</p>
+     * 
+     * @param ids a composite ids
+     * @return {@link List} of {@link T} matching the composite ids {@link CI}
+     */
     public List<T> findByIds(CI ids) {
         var entity = extractEntity();
         var idsFields = new ArrayList<String>();
@@ -60,9 +91,22 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         return jdbc.query(sql, rowMapper, idsParams);
     }
+    /**
+     * Will return the first element of {@link #findByIds(CI)}
+     *
+     * @see #findByIds(CI)
+     * @param ids a composite ids
+     * @return {@link Optional} of {@link T} matching the composite ids {@link CI}
+     */
     public Optional<T> findOneByIds(CI ids) {
         return findByIds(ids).stream().findFirst();
     }
+
+    /**
+     * Persist a new {@link T}
+     *
+     * @param data the data to persist
+     */
     public void insert(T data) {
         var entity = extractEntity();
         var fields = new ArrayList<String>();
@@ -78,6 +122,14 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         jdbc.update(sql, params);
     }
+
+    /**
+     * Update a {@link T} where its composite ids match
+     * <p>Will do nothing if any composite ids are <code>null</code></p>
+     *
+     * @param data The data to update
+     * @return number of row updated (0 or 1)
+     */
     public int update(T data) {
         var entity = extractEntity();
 
@@ -107,6 +159,13 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         return jdbc.update(sql, Stream.concat(params.stream(), idsParams.stream()).toList());
     }
+
+    /**
+     * Delete a row where it matches a composite ids
+     *
+     * @param ids a composite ids
+     * @return the number of row affected (0 or 1)
+     */
     public int deleteByIds(CI ids) {
         var entity = extractEntity();
         var idsFields = new ArrayList<String>();
@@ -128,5 +187,14 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
         );
         return jdbc.update(sql, idsParams);
     }
+
+    /**
+     * Method called when the repository which to extract the value of a {@link CI} matching a
+     * fields annotated with {@link CompositeId}
+     *
+     * @param fieldName the name of the annotated field
+     * @param ids the composite ids object to be extracted
+     * @return the extracted value
+     */
     abstract protected Object extractId(String fieldName, CI ids);
 }
