@@ -1,23 +1,22 @@
 package edu.lorsenmarek.backend.model;
 
+import java.time.Instant;
+
 import edu.lorsenmarek.backend.annotation.CompositeId;
 import lombok.*;
 
-import java.time.Instant;
-
 /**
- * Model describing a rating to an {@link Episode} by a {@link User}
+ * Model describing an {@link Episode} watched by a {@link User}
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserEpisodeRating {
+public class UserEpisodeHistory {
     @CompositeId
     private Long userId;
     @CompositeId
     private Long episodeId;
-    private Instant createdAt;
-    private Instant modifiedAt;
-    private Integer rating;
+    private Instant watchedAt;
+    private Integer watchedDuration;
 }

@@ -14,7 +14,7 @@ public class SerieRowMapper implements RowMapper<Serie> {
         return Serie.builder()
                 .id(rs.getLong("id"))
                 .title(rs.getString("title"))
-                .releasedAt(rs.getTimestamp("releasedAt").toInstant())
+                .releasedAt(rs.getTimestamp("released_at").toInstant())
                 .build();
     }
 }
