@@ -3,6 +3,7 @@ package edu.lorsenmarek.backend.security;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.repository.UserRepository;
 import edu.lorsenmarek.backend.security.token.*;
+import edu.lorsenmarek.backend.util.DurationCodecUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.*;
@@ -44,11 +45,11 @@ public class EmailPasswordAuthenticationProvider implements AuthenticationProvid
      * @param pwdAttemptsLockout duration of lockout period from app properties
      */
     public EmailPasswordAuthenticationProvider(
-            @Value("${auth.providers.emailpassword.attempts.max:0}") String pwdAttemptsMax,
-            @Value("${auth.providers.emailpassword.attempts.lockout:PT10M}") String pwdAttemptsLockout
+            @Value("${auth.providers.email-password.max-attempts}") String pwdAttemptsMax,
+            @Value("${auth.providers.email-password.lockout-duration}") String pwdAttemptsLockout
     ) {
         PWD_ATTEMPTS_MAX = Integer.parseInt(pwdAttemptsMax);
-        PWD_ATTEMPTS_LOCKOUT = Duration.parse(pwdAttemptsLockout);
+        PWD_ATTEMPTS_LOCKOUT = DurationCodecUtil.decode(pwdAttemptsLockout);
     }
 
     /**

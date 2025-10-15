@@ -83,16 +83,19 @@ public class TrendingSerieService {
     private Instant lastUpdate;
     TrendingSerieService(
             JdbcTemplate jdbc,
-            @Value("${services.trending-serie.view-factor:1}") final Double viewFactor,
-            @Value("${services.trending-serie.rating-factor:1.0}") final Double ratingFactor,
-            @Value("${services.trending-serie.limit:10}") final Integer limit,
-            @Value("${services.trending-serie.compute-interval:PT10M}") final String computeInterval
+            @Value("${services.trending-serie.view-factor}") final Double viewFactor,
+            @Value("${services.trending-serie.rating-factor}") final Double ratingFactor,
+            @Value("${services.trending-serie.limit}") final Integer limit,
+            @Value("${services.trending-serie.compute-interval}") final String computeInterval
     ) {
+        // DI
         this.jdbc = jdbc;
-        VIEW_FACTOR = viewFactor;
-        RATING_FACTOR = ratingFactor;
-        LIMIT = limit;
+        // config
+        VIEW_FACTOR      = viewFactor;
+        RATING_FACTOR    = ratingFactor;
+        LIMIT            = limit;
         COMPUTE_INTERVAL = DurationCodecUtil.decode(computeInterval);
+        // caching
         serieTrendingScoreMapper = new SerieTrendingScoreRowMapper();
         lastUpdate      = Instant.ofEpochSecond(0);
         trendingSeries  = Collections.emptyList();
