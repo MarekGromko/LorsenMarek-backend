@@ -1,0 +1,68 @@
+# ----- DEVELOPMENT CONFIG -----
+## REQUIRED env variable are
+# - DB_DBNAME: name of the database
+# - DB_USERNAME: username to database
+# - DB_PASSWORD: password to database
+## Optional env variable
+# - SERVER_PORT
+# - JWT_SECRET
+
+# spring configuration
+spring:
+  application:
+    name: lorsenmarek-backend
+  profiles:
+    active: dev
+  config:
+    import: optional:file:.env[.properties]
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:mariadb://localhost:3306/${DB_DBNAME}
+    username: ${DB_USERNAME} # string
+    password: ${DB_PASSWORD} # string
+    driver-class-name: org.mariadb.jdbc.Driver
+
+# server config
+server:
+  port: ${SERVER_PORT:8080}
+
+# authentication config
+auth:
+  jwt:
+    secret: ${JWT_SECRET:9b211632b87d801c928ae8d9b3228b5b}
+    expiration: 1d
+  # settings for authentication providers
+  providers:
+    email-password: # EmailPasswordAuthProvider
+      max-attempts: 5
+      lockout-duration: t10m
+
+# needed settings for some services
+services:
+  trending-serie: # TrendingSerieService
+    view-factor: 3.0
+    rating-factor: 1.0
+    limit: 10
+    compute-interval: t10m
+
+# ----- Miscellaneous information -----
+## Values of type "duration" follow a simple format:
+# Date (days, months & years) are written like this 1y20m5d
+# Time (hours, minute & seconds) are written like t3h15m30s
+# the "t" before Time is not optional
+# You may omit parameter in both Time & Date
+# ex:
+#   - 4y42d
+#   - t40s
+# You may combine Date & Time, as long as Time comes after Date
+# ex:
+#   - 3dt12h30s
+#   - 4y20m4d t12h
+# Case & white spaces are ignored.
+# Therefore, the following are valid duration format
+#   - 1D T 2H 30M
+#   - t 1M 30S
+#   - 12y 1m 6d T 12h 45m 12s
+
