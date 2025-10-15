@@ -13,8 +13,8 @@ spring:
     name: lorsenmarek-backend
   profiles:
     active: dev
-  #config:
-    #import: optional:file:.env[.properties]
+  config:
+    import: optional:file:.env[.properties]
   sql:
     init:
       mode: always

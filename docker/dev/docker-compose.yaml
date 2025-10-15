@@ -1,0 +1,39 @@
+name: stack-dev-lorsenmarek-backend${CTN_TAG:-}
+services:
+  db:
+    image: mariadb:latest
+    container_name: dev-lorsenmarek-backend-db${CTN_TAG:-}
+    platform: linux/amd64
+    environment:
+      MARIADB_USER:          ${DB_USERNAME}
+      MARIADB_PASSWORD:      ${DB_PASSWORD}
+      MARIADB_DATABASE:      ${DB_DBNAME}
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - "${db_port_ex}:${db_port_in}"
+    command: --lower_case_table_names=1 --sql_mode=ansi_quote
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dev-lorsenmarek-backend-db${IMG_TAG:-}
+    pull_policy: never
+    container_name: dev-lorsenmarek-backend${CTN_TAG:-}
+    depends_on:
+      - db
+    platform: linux/amd64
+    ports:
+      - "${app_port_ex}:${app_port_in}"
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DBNAME:   ${DB_DBNAME}
+      DB_HOST:     dev-lorsenmarek-backend-db${CTN_TAG:-}
+      DB_PORT:     ${db_port_ex}
+      SERVER_PORT: ${app_port_in}
+      KEEP_ALIVE:   ${keep_alive:-}
+      CHECK_GIT_BRANCH:  ${git_branch}
+      SPRING_PROFILES_ACTIVE: ${ENV}
+    command: ${exec:-}
+
+
