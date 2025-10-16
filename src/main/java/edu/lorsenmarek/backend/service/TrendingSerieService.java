@@ -112,14 +112,10 @@ public class TrendingSerieService {
     private List<SerieTrendingScore> computeTrendingSeries(Double viewFactor, Double ratingFactor, Integer limit) {
         return jdbc.query("""
                 SELECT
-                    serie.*
-                    (COUNT(history.user_id) * ?) + (AVG(rating.rating) * ?) AS trending_score
+                    *,
+                    (history_score * ?) + (rating_score * ?) AS trending_score
                 FROM
-                    serie
-                    INNER JOIN user_serie_history AS history ON serie.id = history.serie_id
-                    INNER JOIN user_serie_rating AS rating ON serie.id = rating.serie_id
-                GROUP BY
-                    serie.id
+                    serie_score
                 ORDER BY
                     trending_score DESC
                 LIMIT ?

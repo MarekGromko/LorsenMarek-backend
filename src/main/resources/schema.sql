@@ -1,4 +1,3 @@
-DROP VIEW IF EXISTS `user_serie_history`;
 DROP TABLE IF EXISTS `user_serie_rating`;
 DROP TABLE IF EXISTS `user_episode_rating`;
 DROP TABLE IF EXISTS `user_episode_history`;
@@ -7,6 +6,9 @@ DROP TABLE IF EXISTS `genre`;
 DROP TABLE IF EXISTS `episode`;
 DROP TABLE if EXISTS `serie`;
 DROP TABLE if EXISTS `user`;
+
+DROP VIEW IF EXISTS `user_serie_history`;
+DROP VIEW IF EXISTS `serie_score`;
 
 CREATE TABLE `user`(
     `id` bigint AUTO_INCREMENT,
@@ -94,11 +96,24 @@ CREATE VIEW `user_serie_history` AS (
         `history`.`user_id`         AS `user_id`,
         MAX(`history`.`watched_at`) AS `watched_at`
     FROM
-        `user_episode_history`  as `history`
+        `user_episode_history`  AS `history`
         INNER JOIN `episode`    ON `history`.`episode_id` = `episode`.`id`
         INNER JOIN `serie`      ON `episode`.`serie_id` = `serie`.`id`
     GROUP BY
         `serie`.`id`,
         `history`.`user_id`
+);
+
+CREATE VIEW `serie_score` AS (
+    SELECT
+    	`serie`.*,
+        COUNT(`history`.`user_id`) AS `history_score`,
+        AVG(`rating`.`rating`)     AS `rating_score`
+    FROM
+        `serie`
+        INNER JOIN `user_serie_history` AS `history` ON `serie`.`id` = `history`.`serie_id`
+        INNER JOIN `user_serie_rating`  AS `rating` ON `serie`.`id` = `rating`.`serie_id`
+    GROUP BY
+       	`serie`.`id`
 );
 
