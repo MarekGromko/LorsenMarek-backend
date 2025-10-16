@@ -1,7 +1,9 @@
 package edu.lorsenmarek.backend.configuration;
 
+import edu.lorsenmarek.backend.repository.UserRepository;
 import edu.lorsenmarek.backend.security.EmailPasswordAuthenticationProvider;
 import edu.lorsenmarek.backend.security.JwtHttpFilter;
+import edu.lorsenmarek.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +33,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    JwtHttpFilter jwtHttpFilter;
+    @Bean
+    public JwtHttpFilter jwtHttpFilter(
+            final JwtUtil jwtUtil,
+            final UserRepository userRepository
+    ) {
+        return new JwtHttpFilter(jwtUtil, userRepository);
+    }
 
     /**
      * Defines the password encoder bean used across the authentication process.
@@ -67,7 +73,7 @@ public class SecurityConfig {
      * @throws Exception if there is an error building the security configuration.
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws  Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtHttpFilter jwtHttpFilter) throws  Exception{
         httpSecurity.csrf(csrf ->csrf.disable())
                 .cors(cors->cors.disable())
                 .sessionManagement(sessionManagement ->

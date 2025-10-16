@@ -2,66 +2,36 @@ package edu.lorsenmarek.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.lorsenmarek.backend.common.MeanValue;
+import edu.lorsenmarek.backend.config.MockSecurityConfig;
 import edu.lorsenmarek.backend.dto.RatingRequest;
 import edu.lorsenmarek.backend.exception.RatingUnwatchedMediaException;
 import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.User;
-import edu.lorsenmarek.backend.security.JwtHttpFilter;
-import edu.lorsenmarek.backend.security.token.DetailedAuthToken;
 import edu.lorsenmarek.backend.service.SerieRatingService;
-import edu.lorsenmarek.backend.util.JwtUtil;
-import jakarta.servlet.*;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(controllers = {SerieRatingController.class, CommonErrorHandlerController.class})
+@Import(MockSecurityConfig.class)
 class SerieRatingControllerTest {
-    @Autowired
-    JwtUtil jwtUtil;
     @Autowired
     ObjectMapper mapper;
     @Autowired
     MockMvc mockMvc;
     @MockitoBean
     SerieRatingService mockSerieRatingService;
-    @MockitoBean
-    JwtHttpFilter mockJwtHttpFilter;
-    User userStub;
-    @BeforeEach
-    void mockJwtFilter() throws ServletException, IOException {
-        userStub = User.builder()
-                .id(1L)
-                .build();
-
-        doAnswer((inv)->{
-            var auth = new DetailedAuthToken(userStub, Collections.emptyList());
-            auth.setAuthenticated(true);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            ((FilterChain) inv.getArgument(2)).doFilter(inv.getArgument(0), inv.getArgument(1));
-            return null;
-        }).when(mockJwtHttpFilter).doFilter(
-                any(ServletRequest.class),
-                any(ServletResponse.class),
-                any(FilterChain.class)
-        );
-    }
+    User userStub = MockSecurityConfig.defaultUserStub;
     @Nested
     class GetSerieRating {
         @Test
@@ -192,7 +162,7 @@ class SerieRatingControllerTest {
         verify(mockSerieRatingService).deleteRating(userIdCaptor.capture(), serieIdCaptor.capture());
 
         // assert
-        assertEquals(userIdCaptor.getValue(), 1L);
+        assertEquals(userIdCaptor.getValue(), userStub.getId());
         assertEquals(serieIdCaptor.getValue(), 8L);
     }
 }

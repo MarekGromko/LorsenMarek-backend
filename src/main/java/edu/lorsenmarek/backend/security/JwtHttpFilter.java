@@ -10,9 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
@@ -21,13 +19,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *  @author Marek Gromko
  * @version 1.0
  */
-@Component
 public class JwtHttpFilter extends OncePerRequestFilter {
-    @Autowired
-    JwtUtil jwtUtil;
-    @Autowired
-    UserRepository userRepo;
-
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepo;
+    public JwtHttpFilter(JwtUtil jwtUtil, UserRepository userRepo) {
+        this.jwtUtil = jwtUtil;
+        this.userRepo = userRepo;
+    }
     /**
      * Filters each HTTP request to perform JWT-based authentication.
      *
