@@ -15,7 +15,8 @@ import java.time.Instant;
 public class Episode {
     @Id
     private Long id;
-    private Long seasonId;
+    private Long serieId;
+    private Integer seasonNb;
     private String title;
     private Integer duration;
     private Instant releasedAt;
