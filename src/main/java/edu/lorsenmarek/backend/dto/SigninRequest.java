@@ -1,6 +1,6 @@
 package edu.lorsenmarek.backend.dto;
 
-public record EmailPasswordSigninRequest(
+public record SigninRequest(
         String email,
         String password,
         String title,
