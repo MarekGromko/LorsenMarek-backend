@@ -137,7 +137,7 @@ class EpisodeRatingServiceTest {
         @Test
         void whenEpisodeDoesNotExist_shouldThrow() {
             // arrange
-            when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(Collections.emptyList());
+            when(mockEpisodeRepo.existsById(anyLong())).thenReturn(false);
 
             // act & assert
             assertThrows(ResourceNotFoundException.class, ()->{
@@ -148,7 +148,7 @@ class EpisodeRatingServiceTest {
         @Test
         void whenEpisodeExistsAndNoRating_shouldGetMeanValueWithZeroCount() {
             // arrange
-            when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(UERStub));
+            when(mockEpisodeRepo.existsById(anyLong())).thenReturn(true);
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),
@@ -164,6 +164,7 @@ class EpisodeRatingServiceTest {
         @Test
         void whenSerieAndRatingExists_shouldGetMeanValue() {
             // arrange
+            when(mockEpisodeRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserEpisodeRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(UERStub));
             when(mockJdbc.query(
                     anyString(),

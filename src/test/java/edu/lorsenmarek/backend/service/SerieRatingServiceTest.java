@@ -138,7 +138,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieDoesNotExist_shouldThrow() {
             // arrange
-            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(Collections.emptyList());
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(false);
 
             // act & assert
             assertThrows(ResourceNotFoundException.class, ()->{
@@ -149,7 +149,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieExistsAndNoRating_shouldGetMeanValueWithZeroCount() {
             // arrange
-            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),
@@ -165,6 +165,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieAndRatingExists_shouldGetMeanValue() {
             // arrange
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
             when(mockJdbc.query(
                     anyString(),

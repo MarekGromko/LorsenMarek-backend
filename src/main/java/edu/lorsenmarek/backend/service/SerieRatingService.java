@@ -80,7 +80,7 @@ public class SerieRatingService {
      * @throws ResourceNotFoundException if no rating exist for the given series
      */
     public MeanValue getMeanRating(Long serieId) {
-        if(userSerieRatingRepo.findByIds(new Ids(null, serieId)).isEmpty())
+        if(!serieRepo.existsById(serieId))
             throw new ResourceNotFoundException("serie", serieId.toString());
 
         return jdbc.query("""
@@ -88,7 +88,7 @@ public class SerieRatingService {
                 FROM user_serie_rating
                 WHERE serie_id = ?
                 """,
-                new MeanValueRowMapper(0, 1),
+                new MeanValueRowMapper(),
                 serieId
         ).stream().findFirst().orElse(new MeanValue(0,0));
     }

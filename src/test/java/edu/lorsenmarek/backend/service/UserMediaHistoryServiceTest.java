@@ -54,8 +54,7 @@ class UserMediaHistoryServiceTest {
                     WHERE
                         user_id = ? AND
                         serie_id = ?
-                    LIMIT 1
-                ) AS "exists"
+                ) AS exists_flag
                 """,
                 sqlCaptor.getValue()
         );
@@ -93,9 +92,8 @@ class UserMediaHistoryServiceTest {
                     FROM user_episode_history
                     WHERE
                         user_id = ? AND
-                        serie_id = ?
-                    LIMIT 1
-                ) AS "exists"
+                        episode_id = ?
+                ) AS exists_flag
                 """,
                 sqlCaptor.getValue()
         );

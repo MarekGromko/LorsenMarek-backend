@@ -1,8 +1,37 @@
+
+-- BOGUS DATA --
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `title`, `pwd_digest`, `pwd_attempts`, `pwd_last_attempted_at`) VALUES
+(1, 'bogusUser', 'bogusUser', 'bogus@bogus.com', 'B', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2025-10-16 17:47:03'),
+(2, 'testUser', 'testUser', 'normal@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2007-10-11'),
+(3, 'testUser', 'testUser', 'lockout@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 100, NOW());
+--(4, 'testUser', 'testUser', 'absent@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 100, '2025-10-16 17:47:03')
+
+INSERT INTO `serie` (`id`, `title`, `released_at`) VALUES
+(1, 'bogusSerie', NOW()),
+(2, 'notWatchedSerie', NOW());
+
+INSERT INTO `episode` (`id`, `serie_id`, `season_nb`, `title`, `duration`, `released_at`) VALUES
+(1, 1, 1, 'bogusEpisode', 1, NOW()),
+(2, 2, 1, 'notWatchedEpisode', 1, NOW());
+
+INSERT INTO `user_episode_history` (`user_id`, `episode_id`, `watched_at`, `watched_duration`) VALUES
+(1, 1, NOW(), 1);
+
+INSERT INTO `user_episode_rating` (`user_id`, `episode_id`, `created_at`, `modified_at`, `rating`) VALUES
+(1, 1, NOW(), null, 9999),
+(2, 1, NOW(), NOW(), 9999);
+
+INSERT INTO `user_serie_rating` (`user_id`, `serie_id`, `created_at`, `modified_at`, `rating`) VALUES
+(1, 1, NOW(), null, 9999),
+(2, 1, NOW(), NOW(), 9999);
+
+
+
+
+
+
 -- Generation Time: 2025-10-16 17:52:25.0530
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `title`, `pwd_digest`, `pwd_attempts`, `pwd_last_attempted_at`) VALUES
-(1, 'testUser', 'testUser', 'normal@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2007-10-11'),
-(2, 'testUser', 'testUser', 'lockout@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 100, '2025-10-16 17:47:03'),
---(3, 'testUser', 'testUser', 'absent@testuser.com', 'T', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 100, '2025-10-16 17:47:03'),
 (11, 'Julia', 'Schmidt', 'julia.schmidt@email.com', 'F', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2025-10-16 17:47:03'),
 (12, 'Ethan', 'Miller', 'ethan.miller@email.com', 'M', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2025-10-16 17:47:03'),
 (13, 'Sophie', 'Dubois', 'sophie.dubois@email.com', 'F', '$2a$10$8nadE/niM6bhWleia4HF5.96bb69nwfMV2G./NCS9GSjugi4du5YW', 0, '2025-10-16 17:47:03'),
@@ -19,7 +48,6 @@ INSERT INTO `serie` (`id`, `title`, `released_at`) VALUES
 (12, 'Breaking Bad', '2008-01-20'),
 (13, 'The Witcher', '2019-12-20'),
 (14, 'The Mandalorian', '2019-11-12');
-
 
 INSERT INTO `episode` (`id`, `serie_id`, `season_nb`, `title`, `duration`, `released_at`) VALUES
 (11, 11, 1, 'Chapter One: The Vanishing of Will Byers', 49, '2009-07-15'),
