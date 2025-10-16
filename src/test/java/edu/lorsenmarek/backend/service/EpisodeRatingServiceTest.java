@@ -7,14 +7,13 @@ import edu.lorsenmarek.backend.model.UserEpisodeRating;
 import edu.lorsenmarek.backend.repository.EpisodeRepository;
 import edu.lorsenmarek.backend.repository.UserEpisodeRatingRepository;
 import edu.lorsenmarek.backend.util.InstantCodecUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -27,8 +26,10 @@ import static edu.lorsenmarek.backend.repository.UserEpisodeRatingRepository.Ids
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 
-@SpringBootTest
+@DataJdbcTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class EpisodeRatingServiceTest {
     @Mock
     JdbcTemplate mockJdbc;
