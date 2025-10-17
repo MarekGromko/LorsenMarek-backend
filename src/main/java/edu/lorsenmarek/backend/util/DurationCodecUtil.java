@@ -11,7 +11,7 @@ import java.time.Duration;
 public class DurationCodecUtil {
     /**
      * Decode a string into a {@link Duration}
-     * <p>White spaces & cases are ignored</p>
+     * <p>White spaces and cases are ignored</p>
      * <p>Any period with a {@code month} or {@code year} may have an undetermined amount of seconds</p>
      * <p><br/>
      *     <b>Accepted format</b>

@@ -23,7 +23,7 @@ public class SerieRatingController {
     @Autowired
     SerieRatingService serieRatingService;
     /**
-     * Get the mean rating (sum & count) for a given serie
+     * Get the mean rating (sum and count) for a given serie
      * <p><br/>
      *     <b>Example:</b>
      *     <pre>{@code

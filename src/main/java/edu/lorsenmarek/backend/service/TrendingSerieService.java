@@ -102,7 +102,7 @@ public class TrendingSerieService {
     }
 
     /**
-     * Fetch & compute the trending serie list
+     * Fetch and compute the trending serie list
      *
      * @param viewFactor Control the view factor
      * @param ratingFactor Control the rating factor
