@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  *  @author Marek Gromko
  */
 @Repository
-public interface SerieRepository extends CrudRepository<Serie, Long>, SerieRepositoryCustom {
+public interface SerieRepository extends CrudRepository<Serie, Long> {
 }

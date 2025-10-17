@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh 'make build'
                 sh 'make run exec="git branch --show-current" git_branch=ci'
-                sh 'make once exec="mvn clean compile -ntp"'
+                sh 'make once exec="mvn clean package -ntp"'
             }
         }
         stage('Test') {
@@ -37,13 +37,13 @@ pipeline {
             sh 'make copy src="/home/app/target/site" dst="$WORKSPACE/reports"'
             sh 'make copy src="/home/app/target/reports/apidocs" dst="$WORKSPACE/reports"'
             publishHTML(target: [
-                reportName: 'JaCoCo',
+                reportName: 'JaCoCo report',
                 reportDir: 'reports/jacoco',
                 reportFiles: 'index.html',
                 keepAll: true
             ])
             publishHTML(target: [
-                reportName: 'JavaDoc',
+                reportName: 'JavaDoc report',
                 reportDir: 'reports/apidocs',
                 reportFiles: 'index.html',
                 keepAll: true
