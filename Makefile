@@ -48,7 +48,6 @@ override docker_compose = $(docker_compose_cmd) -f ${dcf}
 
 --validate-all: --validate-env --validate-docker
 
-
 # REQUIRED TARGETS
 build: --validate-all
 	$(docker_compose) build
@@ -78,6 +77,9 @@ status: --validate-all
 logs: --validate-all
 	$(docker_compose) logs -f ${dca}
 
+once: --validate-all
+	$(docker_compose) exec -T=false --interactive=false ${dca} ${exec}
+
 # CONTINUED INTEGRATION SETUP (JENKINS)
 ci-build: --validate-docker
 	docker build \
@@ -92,7 +94,7 @@ ci-mount: --validate-docker
 		-p 8080:8080 \
 		-p 50000:50000 \
 		-v lorsemarek_backend_jenkins_home:/var/jenkins_home \
-		-v ${DOCKER_SOCK}:/var/run/docker.sock \
+		-v ${docker_sock_filepath}:/var/run/docker.sock \
 		--name ci-lorsenmarek-backend \
 		ci-lorsenmarek-backend
 	docker exec -u root ci-lorsenmarek-backend /bin/chown root:docker /var/run/docker.sock
