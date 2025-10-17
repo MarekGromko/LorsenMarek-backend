@@ -6,7 +6,8 @@ pipeline {
         DB_PASSWORD = 'ci-password'
         DB_DBNAME   = 'ci-db'
 
-        build_tag   = "jenkins-${env.BUILD_NUMBER}"
+        BUILD_TAG   = "jenkins-${env.BUILD_NUMBER}"
+
         keep_alive  = true
         db_port_ex  = "52000"
         app_port_ex = '52100'

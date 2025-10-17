@@ -20,9 +20,9 @@ export docker_sock_filepath ?= /var/run/docker.sock
 
 
 # these can not/should not be overwritten
-ifneq (,$(build_tag))
-	export IMG_TAG = :$(build_tag)
-	export CTN_TAG = -$(subst .,_,$(build_tag))
+ifneq (,$(BUILD_TAG))
+	export IMG_TAG = :$(BUILD_TAG)
+	export CTN_TAG = -$(subst .,_,$(BUILD_TAG))
 endif
 docker_compose_cmd :=
 override dca := app 								# docker compose main service name
