@@ -23,20 +23,31 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'make once exec="mvn test -ntp"'
-                sh 'make once exec="mvn jacoco:report -ntp"'
             }
         }
-        stage('Packaging') {
+        stage('Reports') {
             steps {
-                sh 'make once exec="mvn package -ntp"'
                 sh 'make once exec="mvn javadoc:javadoc -ntp"'
+                sh 'make once exec="mvn jacoco:report -ntp"'
             }
         }
     }
     post {
         success {
-            sh 'make copy src="./target/site" dst="$WORKSPACE/reports"'
-            sh 'make copy src="./target/reports" dst="$WORKSPACE/reports"'
+            sh 'make copy src="/home/app/target/site" dst="$WORKSPACE/reports"'
+            sh 'make copy src="/home/app/target/reports/apidocs" dst="$WORKSPACE/reports"'
+            publishHTML(target: [
+                reportName: 'JaCoCo',
+                reportDir: 'reports/jacoco',
+                reportFiles: 'index.html',
+                keepAll: true
+            ])
+            publishHTML(target: [
+                reportName: 'JavaDoc',
+                reportDir: 'reports/apidocs',
+                reportFiles: 'index.html',
+                keepAll: true
+            ])
         }
         cleanup {
             sh "make prune"
