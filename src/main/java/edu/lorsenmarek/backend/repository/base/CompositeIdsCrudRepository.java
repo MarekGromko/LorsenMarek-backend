@@ -87,7 +87,7 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
                 entity.getTableName().toString(),
                 String.join(" AND ", idsFields)
         );
-        return jdbc.query(sql, rowMapper, idsParams);
+        return jdbc.query(sql, rowMapper, idsParams.toArray());
     }
     /**
      * Will return the first element of {@link #findByIds(CI)}
@@ -117,7 +117,7 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
                 String.join(", ", fields),
                 String.join(", ", Collections.nCopies(fields.size(), "?"))
         );
-        jdbc.update(sql, params);
+        jdbc.update(sql, params.toArray());
     }
     /**
      * Update a {@link T} where its composite ids match
@@ -153,7 +153,7 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
                 String.join(", ", fields),
                 String.join(" AND ", idsFields)
         );
-        return jdbc.update(sql, Stream.concat(params.stream(), idsParams.stream()).toList());
+        return jdbc.update(sql, Stream.concat(params.stream(), idsParams.stream()).toArray());
     }
     /**
      * Delete a row where it matches a composite ids
@@ -180,7 +180,7 @@ abstract public class CompositeIdsCrudRepository<T, CI> {
                 entity.getTableName().toString(),
                 String.join(" AND ", idsFields)
         );
-        return jdbc.update(sql, idsParams);
+        return jdbc.update(sql, idsParams.toArray());
     }
     /**
      * Method called when the repository which to extract the value of a {@link CI} matching a
