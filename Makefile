@@ -25,8 +25,8 @@ ifneq (,$(BUILD_TAG))
 	export CTN_TAG = -$(subst .,_,$(BUILD_TAG))
 endif
 docker_compose_cmd :=
-override dca := app 								# docker compose main service name
-override dcf := ./docker/${ENV}/docker-compose.yaml # docker compose filepath
+override dca := app
+override dcf := ./docker/${ENV}/docker-compose.yaml
 override docker_compose = $(docker_compose_cmd) -f ${dcf}
 
 --validate-docker:

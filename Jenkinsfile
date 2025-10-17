@@ -8,7 +8,6 @@ pipeline {
 
         BUILD_TAG   = "jenkins-${env.BUILD_NUMBER}"
 
-        git_branch  = 'ci'
         keep_alive  = true
         db_port_ex  = '52000'
         app_port_ex = '52100'
@@ -17,27 +16,29 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'make build'
-                sh 'make run exec="git branch git branch --show-current"'
+                sh 'make run exec="git branch --show-current" git_branch=ci'
                 sh 'make once exec="mvn clean compile -ntp"'
             }
         }
         stage('Test') {
             steps {
-                sh 'make once exec="mvn clean test -ntp"'
+                sh 'make once exec="mvn test -ntp"'
+                sh 'make once exec="mvn jacoco:report -ntp"'
             }
         }
-        stage('Reports') {
+        stage('Packaging') {
             steps {
-                sh 'make once exec="mvn clean package"'
-                sh 'make once exec="mvn javadoc:javadoc"'
-                sh 'make once exec="mvn jacoco:report"'
+                sh 'make once exec="mvn package -ntp"'
+                sh 'make once exec="mvn javadoc:javadoc -ntp"'
             }
         }
     }
     post {
-        always {
-            sh 'make copy src="./target/site"    dst="$WORKSPACE/reports"'
+        success {
+            sh 'make copy src="./target/site" dst="$WORKSPACE/reports"'
             sh 'make copy src="./target/reports" dst="$WORKSPACE/reports"'
+        }
+        cleanup {
             sh "make prune"
         }
     }
