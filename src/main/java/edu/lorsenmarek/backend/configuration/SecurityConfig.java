@@ -54,7 +54,7 @@ public class SecurityConfig {
     /**
      * Defines the custom authentication manager that uses the application
      * {@link EmailPasswordAuthenticationProvider}.
-     * @param emailPasswordAuthenticationProvider the custom provider handling email & password authentication
+     * @param emailPasswordAuthenticationProvider the custom provider handling email and password authentication
      * @return a configure {@link AuthenticationManager} instance.
      */
     @Bean

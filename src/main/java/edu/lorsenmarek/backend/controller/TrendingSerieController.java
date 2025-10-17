@@ -24,7 +24,7 @@ public class TrendingSerieController {
     @Autowired
     TrendingSerieService trendingSerieService;
     /**
-     * Get the mean rating (sum & count) for a given serie
+     * Get the mean rating (sum and count) for a given serie
      * <p><b>This route is permitted for all</b></p>
      * <p><br/>
      *     <b>Example: </b>

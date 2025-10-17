@@ -23,7 +23,7 @@ public class EpisodeRatingController {
     @Autowired
     EpisodeRatingService episodeRatingService;
     /**
-     * Get the mean rating (sum & count) for a given episode
+     * Get the mean rating (sum and count) for a given episode
      * <p><br/>
      *     <b>Example:</b>
      *     <pre>{@code

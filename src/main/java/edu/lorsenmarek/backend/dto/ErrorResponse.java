@@ -14,7 +14,7 @@ import lombok.*;
  *     error
  * </p>
  * <p>
- *     Error responses may have a <b><code>details</code></b> field, with custom information & details about the error
+ *     Error responses may have a <b><code>details</code></b> field, with custom information and details about the error
  * </p>
  * <p><br/>
  *     <b>Example:</b>
