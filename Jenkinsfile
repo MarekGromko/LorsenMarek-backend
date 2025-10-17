@@ -8,21 +8,22 @@ pipeline {
 
         BUILD_TAG   = "jenkins-${env.BUILD_NUMBER}"
 
+        git_branch  = 'ci'
         keep_alive  = true
-        db_port_ex  = "52000"
+        db_port_ex  = '52000'
         app_port_ex = '52100'
     }
     stages {
         stage('Build') {
             steps {
                 sh 'make build'
-                sh 'make run    exec="mvn clean compile -ntp"'
+                sh 'make run exec="git branch git branch --show-current"'
+                sh 'make once exec="mvn clean compile -ntp"'
             }
         }
         stage('Test') {
             steps {
                 sh 'make once exec="mvn clean test -ntp"'
-                sh 'make once exec="mvn jacoco:report"'
             }
         }
         stage('Reports') {

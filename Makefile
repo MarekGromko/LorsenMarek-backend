@@ -81,7 +81,7 @@ once: --validate-all
 	$(docker_compose) exec -T=false --interactive=false ${dca} ${exec}
 
 copy: --validate-all
-	$(docker_compose) cp ${dca}:${src} ${dest}
+	$(docker_compose) cp ${dca}:${src} ${dst}
 
 # CONTINUED INTEGRATION SETUP (JENKINS)
 ci-build: --validate-docker
