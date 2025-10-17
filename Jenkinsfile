@@ -16,24 +16,27 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'make build'
-                sh 'make run    exec="mvn clean package"'
-                sh 'make once   exec="mvn javadoc:javadoc"'
+                sh 'make run    exec="mvn clean compile -ntp"'
             }
         }
         stage('Test') {
             steps {
-                sh 'make test'
+                sh 'make once exec="mvn clean test -ntp"'
                 sh 'make once exec="mvn jacoco:report"'
             }
         }
-        stage('Deploy') {
+        stage('Reports') {
             steps {
-                sh 'make once exec="mvn package"'
+                sh 'make once exec="mvn clean package"'
+                sh 'make once exec="mvn javadoc:javadoc"'
+                sh 'make once exec="mvn jacoco:report"'
             }
         }
     }
     post {
         always {
+            sh 'make copy src="./target/site"    dst="$WORKSPACE/reports"'
+            sh 'make copy src="./target/reports" dst="$WORKSPACE/reports"'
             sh "make prune"
         }
     }

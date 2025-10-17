@@ -80,6 +80,9 @@ logs: --validate-all
 once: --validate-all
 	$(docker_compose) exec -T=false --interactive=false ${dca} ${exec}
 
+copy: --validate-all
+	$(docker_compose) cp ${dca}:${src} ${dest}
+
 # CONTINUED INTEGRATION SETUP (JENKINS)
 ci-build: --validate-docker
 	docker build \
