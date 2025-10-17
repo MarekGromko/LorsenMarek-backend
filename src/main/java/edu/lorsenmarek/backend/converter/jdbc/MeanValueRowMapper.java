@@ -42,8 +42,8 @@ public class MeanValueRowMapper implements RowMapper<MeanValue> {
      * <p>the count column is by default at index 1</p>
      */
     public MeanValueRowMapper() {
-        this.sumIndex = 0;
-        this.countIndex = 1;
+        this.sumIndex = 1;
+        this.countIndex = 2;
     }
     @Override
     @NonNull

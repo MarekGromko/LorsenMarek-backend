@@ -29,7 +29,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DBNAME:   ${DB_DBNAME}
       DB_HOST:     dev-lorsenmarek-backend-db${CTN_TAG:-}
-      DB_PORT:     ${db_port_ex}
+      DB_PORT:     ${db_port_in}
       SERVER_PORT: ${app_port_in}
       KEEP_ALIVE:   ${keep_alive:-}
       CHECK_GIT_BRANCH:  ${git_branch}

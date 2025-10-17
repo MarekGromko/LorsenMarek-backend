@@ -1,7 +1,7 @@
 package edu.lorsenmarek.backend.controller;
 
 import edu.lorsenmarek.backend.dto.EmailPasswordLoginRequest;
-import edu.lorsenmarek.backend.dto.EmailPasswordSigninRequest;
+import edu.lorsenmarek.backend.dto.SigninRequest;
 import edu.lorsenmarek.backend.dto.ErrorResponse;
 import edu.lorsenmarek.backend.dto.JwtResponse;
 import edu.lorsenmarek.backend.model.User;
@@ -65,7 +65,7 @@ public class AuthController {
      */
 
     @PostMapping("/signin")
-    public ResponseEntity<?> emailPasswordSignin(@RequestBody EmailPasswordSigninRequest req) {
+    public ResponseEntity<?> emailPasswordSignin(@RequestBody SigninRequest req) {
         var result = userRepo.findByEmail(req.email());
         if(result.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("EmailAlreadyInUse", "Email is already in Use"));

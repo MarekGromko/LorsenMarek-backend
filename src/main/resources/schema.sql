@@ -1,13 +1,14 @@
-DROP VIEW IF EXISTS `user_serie_history`;
 DROP TABLE IF EXISTS `user_serie_rating`;
 DROP TABLE IF EXISTS `user_episode_rating`;
 DROP TABLE IF EXISTS `user_episode_history`;
 DROP TABLE IF EXISTS `serie_genre`;
 DROP TABLE IF EXISTS `genre`;
 DROP TABLE IF EXISTS `episode`;
-DROP TABLE IF EXISTS `season`;
 DROP TABLE if EXISTS `serie`;
 DROP TABLE if EXISTS `user`;
+
+DROP VIEW IF EXISTS `user_serie_history`;
+DROP VIEW IF EXISTS `serie_score`;
 
 CREATE TABLE `user`(
     `id` bigint AUTO_INCREMENT,
@@ -29,24 +30,15 @@ CREATE TABLE `serie`(
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `season` (
-    `id` bigint AUTO_INCREMENT,
-    `serie_id` bigint,
-    `title` varchar(255),
-    `duration` int,
-    `released_at` TIMESTAMP,
-    PRIMARY KEY (`id`),
-    CONSTRAINT `season_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
-);
-
 CREATE TABLE `episode` (
     `id` bigint AUTO_INCREMENT,
-    `season_id` bigint,
+    `serie_id` bigint,
+    `season_nb` int,
     `title` varchar(255),
     `duration` int,
     `released_at` timestamp,
     PRIMARY KEY (`id`),
-    CONSTRAINT `episode_fk_season` FOREIGN KEY (`season_id`) REFERENCES `Season` (`id`) ON DELETE CASCADE
+    CONSTRAINT `episode_fk_serie` FOREIGN KEY (`serie_id`) REFERENCES `Serie` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `genre` (
@@ -104,12 +96,24 @@ CREATE VIEW `user_serie_history` AS (
         `history`.`user_id`         AS `user_id`,
         MAX(`history`.`watched_at`) AS `watched_at`
     FROM
-        `user_episode_history`  as `history`
+        `user_episode_history`  AS `history`
         INNER JOIN `episode`    ON `history`.`episode_id` = `episode`.`id`
-        INNER JOIN `season`     ON `episode`.`season_id` = `season`.`id`
-        INNER JOIN `serie`      ON `season`.`serie_id` = `serie`.`id`
+        INNER JOIN `serie`      ON `episode`.`serie_id` = `serie`.`id`
     GROUP BY
         `serie`.`id`,
         `history`.`user_id`
+);
+
+CREATE VIEW `serie_score` AS (
+    SELECT
+    	`serie`.*,
+        COUNT(`history`.`user_id`) AS `history_score`,
+        AVG(`rating`.`rating`)     AS `rating_score`
+    FROM
+        `serie`
+        INNER JOIN `user_serie_history` AS `history` ON `serie`.`id` = `history`.`serie_id`
+        INNER JOIN `user_serie_rating`  AS `rating` ON `serie`.`id` = `rating`.`serie_id`
+    GROUP BY
+       	`serie`.`id`
 );
 

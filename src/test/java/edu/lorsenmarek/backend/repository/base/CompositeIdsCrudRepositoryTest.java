@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.data.jdbc.core.mapping.JdbcMappingContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,8 +22,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 
-@SpringBootTest
+@DataJdbcTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class CompositeIdsCrudRepositoryTest {
     @Data
     @NoArgsConstructor
@@ -91,20 +94,19 @@ class CompositeIdsCrudRepositoryTest {
             compositeRepo.findByIds(new Ids(1L, null));
 
             // capture
-            var sqlCaptor = ArgumentCaptor.forClass(String.class);
-            var paramsCaptor = ArgumentCaptor.forClass(List.class);
+            var sqlCaptor       = ArgumentCaptor.forClass(String.class);
+            var thisIdCaptor    = ArgumentCaptor.forClass(Long.class);
             verify(mockJdbc).query(
                     sqlCaptor.capture(),
                     ArgumentMatchers.<RowMapper<SomeComposite>>any(),
-                    paramsCaptor.capture()
+                    thisIdCaptor.capture()
             );
 
             // assert
             System.out.println(sqlCaptor.getValue());
             assertTrue(sqlCaptor.getValue().toLowerCase().contains("this_id"));
             assertFalse(sqlCaptor.getValue().toLowerCase().contains("that_id"));
-            assertEquals(paramsCaptor.getValue().size(), 1);
-            assertEquals(paramsCaptor.getValue().get(0), 1L);
+            assertEquals(thisIdCaptor.getValue(), 1L);
         }
         @Test
         void whenNoneIsNull_shouldCheckBothColumn() {
@@ -119,19 +121,18 @@ class CompositeIdsCrudRepositoryTest {
             compositeRepo.findByIds(new Ids(1L, 2L));
 
             // capture
-            var sqlCaptor = ArgumentCaptor.forClass(String.class);
-            var paramsCaptor = ArgumentCaptor.forClass(List.class);
+            var sqlCaptor       = ArgumentCaptor.forClass(String.class);
             verify(mockJdbc).query(
                     sqlCaptor.capture(),
                     ArgumentMatchers.<RowMapper<SomeComposite>>any(),
-                    paramsCaptor.capture()
+                    anyLong(),
+                    anyLong()
             );
 
             // assert
             System.out.println(sqlCaptor.getValue());
             assertTrue(sqlCaptor.getValue().toLowerCase().contains("this_id"));
             assertTrue(sqlCaptor.getValue().toLowerCase().contains("that_id"));
-            assertEquals(paramsCaptor.getValue().size(), 2);
         }
     }
     @Test
@@ -147,10 +148,11 @@ class CompositeIdsCrudRepositoryTest {
 
         // capture
         var sqlCaptor = ArgumentCaptor.forClass(String.class);
-        var paramsCaptor = ArgumentCaptor.forClass(List.class);
         verify(mockJdbc).update(
                 sqlCaptor.capture(),
-                paramsCaptor.capture()
+                any(),
+                any(),
+                any()
         );
 
         // assert
@@ -158,7 +160,6 @@ class CompositeIdsCrudRepositoryTest {
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("this_id"));
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("that_id"));
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("some_field"));
-        assertEquals(paramsCaptor.getValue().size(), 3);
     }
     @Test
     void whenUpdate_allFieldsShouldBeUpdated() {
@@ -173,10 +174,12 @@ class CompositeIdsCrudRepositoryTest {
 
         // capture
         var sqlCaptor = ArgumentCaptor.forClass(String.class);
-        var paramsCaptor = ArgumentCaptor.forClass(List.class);
+        var someFieldCaptor = ArgumentCaptor.forClass(String.class);
         verify(mockJdbc).update(
                 sqlCaptor.capture(),
-                paramsCaptor.capture()
+                someFieldCaptor.capture(),
+                anyLong(),
+                anyLong()
         );
 
         // assert
@@ -184,7 +187,7 @@ class CompositeIdsCrudRepositoryTest {
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("this_id"));
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("that_id"));
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("some_field"));
-        assertEquals(paramsCaptor.getValue().size(), 3);
+        assertEquals(someFieldCaptor.getValue(), "123");
     }
     @Test
     void whenDeleteByIds_allCompositeIdsShouldBeThere() {
@@ -199,10 +202,10 @@ class CompositeIdsCrudRepositoryTest {
 
         // capture
         var sqlCaptor = ArgumentCaptor.forClass(String.class);
-        var paramsCaptor = ArgumentCaptor.forClass(List.class);
         verify(mockJdbc).update(
                 sqlCaptor.capture(),
-                paramsCaptor.capture()
+                anyLong(),
+                anyLong()
         );
 
         // assert
@@ -210,6 +213,5 @@ class CompositeIdsCrudRepositoryTest {
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("this_id"));
         assertTrue(sqlCaptor.getValue().toLowerCase().contains("that_id"));
         assertFalse(sqlCaptor.getValue().toLowerCase().contains("some_field"));
-        assertEquals(paramsCaptor.getValue().size(), 2);
     }
 }

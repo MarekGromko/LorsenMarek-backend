@@ -60,7 +60,7 @@ public class EmailPasswordAuthenticationProvider implements AuthenticationProvid
     private void tryUserLockout(User user) {
         if(PWD_ATTEMPTS_MAX > 0 &&
                 user.getPwdAttempts() >= PWD_ATTEMPTS_MAX &&
-                user.getPwdLastAttemptedAt().isBefore(Instant.now().minus(PWD_ATTEMPTS_LOCKOUT))
+                user.getPwdLastAttemptedAt().isAfter(Instant.now().minus(PWD_ATTEMPTS_LOCKOUT))
         ) {
             throw new LockedException("User is locked out from attempting to authenticate");
         }

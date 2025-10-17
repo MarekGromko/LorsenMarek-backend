@@ -7,6 +7,7 @@ out/
 target/
 build/
 .gradle/
+sql/
 
 # Compiled class files
 *.class

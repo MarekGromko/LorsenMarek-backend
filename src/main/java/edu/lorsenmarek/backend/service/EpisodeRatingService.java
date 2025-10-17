@@ -89,7 +89,7 @@ public class EpisodeRatingService {
      * @throws ResourceNotFoundException if episode does not exist
      */
     public MeanValue getMeanRating(Long episodeId) throws ResourceNotFoundException {
-        if(userEpisodeRatingRepo.findByIds(new Ids(null, episodeId)).isEmpty())
+        if(!episodeRepo.existsById(episodeId))
             throw new ResourceNotFoundException("episode", episodeId.toString());
         return jdbc.query("""
                 SELECT SUM(RATING), COUNT(*)

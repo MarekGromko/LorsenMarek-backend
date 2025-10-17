@@ -6,6 +6,8 @@ import org.springframework.lang.NonNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 /**
  * Implementation of {@link RowMapper} for {@link UserSerieRating}
@@ -20,7 +22,10 @@ public class UserSerieRatingRowMapper implements RowMapper<UserSerieRating> {
                 .userId(rs.getLong("user_id"))
                 .serieId(rs.getLong("serie_id"))
                 .createdAt(rs.getTimestamp("created_at").toInstant())
-                .modifiedAt(rs.getTimestamp("modified_at").toInstant())
+                .modifiedAt(Optional
+                        .ofNullable(rs.getTimestamp("modified_at"))
+                        .map(Timestamp::toInstant)
+                        .orElse(null))
                 .rating(rs.getInt("rating"))
                 .build();
     }

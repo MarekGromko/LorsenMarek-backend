@@ -7,14 +7,13 @@ import edu.lorsenmarek.backend.model.UserSerieRating;
 import edu.lorsenmarek.backend.repository.SerieRepository;
 import edu.lorsenmarek.backend.repository.UserSerieRatingRepository;
 import edu.lorsenmarek.backend.util.InstantCodecUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -28,8 +27,10 @@ import static edu.lorsenmarek.backend.repository.UserSerieRatingRepository.Ids;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 
-@SpringBootTest
+@DataJdbcTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class SerieRatingServiceTest {
     @Mock
     JdbcTemplate mockJdbc;
@@ -137,7 +138,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieDoesNotExist_shouldThrow() {
             // arrange
-            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(Collections.emptyList());
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(false);
 
             // act & assert
             assertThrows(ResourceNotFoundException.class, ()->{
@@ -148,7 +149,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieExistsAndNoRating_shouldGetMeanValueWithZeroCount() {
             // arrange
-            when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockJdbc.query(
                     anyString(),
                     ArgumentMatchers.<RowMapper<MeanValue>>any(),
@@ -164,6 +165,7 @@ class SerieRatingServiceTest {
         @Test
         void whenSerieAndRatingExists_shouldGetMeanValue() {
             // arrange
+            when(mockSerieRepo.existsById(anyLong())).thenReturn(true);
             when(mockUserSerieRatingRepo.findByIds(any(Ids.class))).thenReturn(List.of(USRStub));
             when(mockJdbc.query(
                     anyString(),
