@@ -20,13 +20,13 @@ export docker_sock_filepath ?= /var/run/docker.sock
 
 
 # these can not/should not be overwritten
-ifneq (,$(build_tag))
-	export IMG_TAG = :$(build_tag)
-	export CTN_TAG = -$(subst .,_,$(build_tag))
+ifneq (,$(BUILD_TAG))
+	export IMG_TAG = :$(BUILD_TAG)
+	export CTN_TAG = -$(subst .,_,$(BUILD_TAG))
 endif
 docker_compose_cmd :=
-override dca := app 								# docker compose main service name
-override dcf := ./docker/${ENV}/docker-compose.yaml # docker compose filepath
+override dca := app
+override dcf := ./docker/${ENV}/docker-compose.yaml
 override docker_compose = $(docker_compose_cmd) -f ${dcf}
 
 --validate-docker:
@@ -47,7 +47,6 @@ override docker_compose = $(docker_compose_cmd) -f ${dcf}
   	fi;
 
 --validate-all: --validate-env --validate-docker
-
 
 # REQUIRED TARGETS
 build: --validate-all
@@ -78,6 +77,12 @@ status: --validate-all
 logs: --validate-all
 	$(docker_compose) logs -f ${dca}
 
+once: --validate-all
+	$(docker_compose) exec -T=false --interactive=false ${dca} ${exec}
+
+copy: --validate-all
+	$(docker_compose) cp ${dca}:${src} ${dst}
+
 # CONTINUED INTEGRATION SETUP (JENKINS)
 ci-build: --validate-docker
 	docker build \
@@ -92,7 +97,7 @@ ci-mount: --validate-docker
 		-p 8080:8080 \
 		-p 50000:50000 \
 		-v lorsemarek_backend_jenkins_home:/var/jenkins_home \
-		-v ${DOCKER_SOCK}:/var/run/docker.sock \
+		-v ${docker_sock_filepath}:/var/run/docker.sock \
 		--name ci-lorsenmarek-backend \
 		ci-lorsenmarek-backend
 	docker exec -u root ci-lorsenmarek-backend /bin/chown root:docker /var/run/docker.sock

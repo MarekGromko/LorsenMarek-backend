@@ -33,6 +33,7 @@ ENV MAVEN_HOME=/opt/maven/apache-maven-3.9.11
 
 # install plugins
 RUN jenkins-plugin-cli --plugins \
+    htmlpublisher:latest \
     workflow-job:latest \
     configuration-as-code:latest \
     job-dsl:latest \

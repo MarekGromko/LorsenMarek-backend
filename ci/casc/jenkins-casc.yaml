@@ -19,7 +19,7 @@ jobs:
                 remote {
                   url('https://github.com/MarekGromko/LorsenMarek-backend.git')
                 }
-                branches('build')
+                branches('ci')
               }
             }
             scriptPath('Jenkinsfile')
