@@ -4,11 +4,15 @@ import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
 
+/**
+ * A fully described user
+ */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class User {
+    /** Create a new {@link User} */
+    public User() {}
     @Id
     private Long id;
     private String title;

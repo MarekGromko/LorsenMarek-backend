@@ -146,16 +146,26 @@
 					</argLine>
 				</configuration>
 			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.7.0</version>
 				<configuration>
+					<reportOutputDirectory>
+						${basedir}/target/site
+					</reportOutputDirectory>
+					<destDir>
+						apidocs
+					</destDir>
 					<additionalOptions>
 						<additionalOption>-Xdoclint:none</additionalOption>
 					</additionalOptions>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
-
+	</reporting>
 </project>

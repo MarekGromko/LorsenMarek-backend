@@ -10,13 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Instant;
 
 /**
- * Configuration class for customizing Jackson JSON .
- *  @author Marek Gromko
+ * Configuration class for customizing Jackson JSON
+ * @author Marek Gromko
  * @version 1.0
- *
  */
 @Configuration
 public class JacksonConfig {
+    /** {@link JacksonConfig} should not be instantiated */
+    public JacksonConfig() {}
     /**
      * Customizes the {@link com.fasterxml.jackson.databind.ObjectMapper} used by Spring boot.
      * <p>this method registers custom serializers and deserializers for {@link java.time.Instant}

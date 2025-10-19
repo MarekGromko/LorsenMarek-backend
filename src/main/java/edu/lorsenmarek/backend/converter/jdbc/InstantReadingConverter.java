@@ -7,8 +7,18 @@ import org.springframework.lang.NonNull;
 
 import java.time.Instant;
 
+/**
+ * Reading converter that transform a {@link String} to an {@link Instant}
+ */
 @ReadingConverter
 public class InstantReadingConverter implements Converter<String, Instant> {
+    /** Create a new {@link InstantReadingConverter} */
+    public InstantReadingConverter() {}
+    /**
+     * Do the conversion
+     * @param source the string input
+     * @return the matching Instant
+     */
     @Override
     @NonNull
     public Instant convert(@NonNull String source) {

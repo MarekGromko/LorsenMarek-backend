@@ -8,7 +8,6 @@ import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.repository.UserRepository;
 import edu.lorsenmarek.backend.security.token.EmailPasswordAuthToken;
 import edu.lorsenmarek.backend.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -34,14 +33,29 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    UserRepository userRepo;
-    @Autowired
-    JwtUtil jwtUtil;
-    @Autowired
-    PasswordEncoder pwdEncoder;
+    final private AuthenticationManager authenticationManager;
+    final private UserRepository userRepo;
+    final private JwtUtil jwtUtil;
+    final private PasswordEncoder pwdEncoder;
+
+    /**
+     * Create a new {@link AuthController}
+     * @param authenticationManager depends on {@link AuthenticationManager}
+     * @param userRepo depends on {@link UserRepository}
+     * @param jwtUtil depends on {@link JwtUtil}
+     * @param pwdEncoder depends on {@link PasswordEncoder}
+     */
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            UserRepository userRepo,
+            JwtUtil jwtUtil,
+            PasswordEncoder pwdEncoder
+    ) {
+        this.authenticationManager = authenticationManager;
+        this.userRepo = userRepo;
+        this.jwtUtil = jwtUtil;
+        this.pwdEncoder = pwdEncoder;
+    }
 
     /**
      * Authentication a user using email and password.

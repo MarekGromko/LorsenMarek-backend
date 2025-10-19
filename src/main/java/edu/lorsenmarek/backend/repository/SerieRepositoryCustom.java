@@ -10,5 +10,10 @@ import java.util.List;
  *  @author Marek Gromko
  */
 public interface SerieRepositoryCustom {
+    /**
+     * Search a serie by option
+     * @param options the search options
+     * @return a {@link List} of {@link Serie} matching the options provided
+     */
     List<Serie> searchByOptions(SerieSearchOptions options);
 }

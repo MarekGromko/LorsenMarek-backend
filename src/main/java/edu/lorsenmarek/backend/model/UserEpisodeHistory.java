@@ -10,9 +10,10 @@ import lombok.*;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class UserEpisodeHistory {
+    /** Create a new {@link UserEpisodeHistory} */
+    public UserEpisodeHistory() {}
     @CompositeId
     private Long userId;
     @CompositeId
