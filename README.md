@@ -11,7 +11,7 @@ Travail présenté à
 
 ## Installation
 
-Checkout the wiki [[Installation Page|installation]] for more information!
+Checkout the wiki **Installation** page for more information!
 
 ## How to use
 
