@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dev-lorsenmarek-backend-${IMG_TAG:-}
+    image: dev-lorsenmarek-backend${IMG_TAG:-}
     pull_policy: never
     container_name: dev-lorsenmarek-backend${CTN_TAG:-}
     depends_on:
