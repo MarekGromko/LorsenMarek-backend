@@ -28,12 +28,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * </ul>
  *  All other endpoints require authentication with a valid JWT token
  *
+ * @author Lorsen Lamour
  * @author Marek Gromko
  * @version 1.0
  */
-
 @Configuration
 public class SecurityConfig {
+    /** {@link SecurityConfig should not be instantianted}*/
+    public SecurityConfig(){}
+    /**
+     * {@link Bean} for generating injecting a {@link JwtHttpFilter}
+     * @param jwtUtil depends on {@link JwtUtil}
+     * @param userRepository depends on {@link UserRepository}
+     * @return a new {@link JwtHttpFilter}
+     */
     @Bean
     public JwtHttpFilter jwtHttpFilter(
             final JwtUtil jwtUtil,
@@ -69,6 +77,7 @@ public class SecurityConfig {
     /**
      * Defines the core security filter chain for all HTTP request.
      * @param httpSecurity the {@link HttpSecurity} configuration builder.
+     * @param jwtHttpFilter the {@link JwtHttpFilter} configuration builder.
      * @return a configured {@link SecurityFilterChain} instance that defines the app security rules
      * @throws Exception if there is an error building the security configuration.
      */

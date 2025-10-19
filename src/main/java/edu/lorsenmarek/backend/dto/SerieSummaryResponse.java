@@ -6,16 +6,15 @@ import java.time.Instant;
 
 /**
  * Response DTO holding summary information about a {@link Serie}
- * <p><br>
- *     <b>Example:</b>
- *     <pre>{@code
- *     {
- *         "id": 1,
- *         "title": "Some Serie",
- *         "releasedAt": "2007-12-12 5:30:10"
- *     }
- *     }</pre>
- * </p>
+ * <br>
+ * <b>Example:</b>
+ * <pre>{@code
+ * {
+ *     "id": 1,
+ *     "title": "Some Serie",
+ *     "releasedAt": "2007-12-12 5:30:10"
+ * }
+ * }</pre>
  *
  * @see Serie
  * @param id the serie id

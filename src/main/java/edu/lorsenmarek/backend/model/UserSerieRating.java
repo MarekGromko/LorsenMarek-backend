@@ -1,6 +1,7 @@
 package edu.lorsenmarek.backend.model;
 
 import edu.lorsenmarek.backend.annotation.CompositeId;
+import edu.lorsenmarek.backend.repository.UserSerieRatingRepository;
 import lombok.*;
 
 import java.time.Instant;
@@ -10,9 +11,10 @@ import java.time.Instant;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class UserSerieRating {
+    /** Create a new {@link UserSerieRating} */
+    public UserSerieRating(){}
     @CompositeId
     private Long userId;
     @CompositeId

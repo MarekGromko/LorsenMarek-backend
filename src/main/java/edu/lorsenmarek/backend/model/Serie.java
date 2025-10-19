@@ -9,9 +9,10 @@ import java.time.Instant;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Serie {
+    /** Create a new {@link Serie} */
+    public Serie(){}
     @Id
     private Long id;
     private String title;

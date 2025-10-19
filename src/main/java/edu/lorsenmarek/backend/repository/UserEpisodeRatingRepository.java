@@ -14,7 +14,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserEpisodeRatingRepository extends CompositeIdsCrudRepository<UserEpisodeRating, UserEpisodeRatingRepository.Ids> {
+    /**
+     * Composite id to locate a {@link UserEpisodeRating}
+     * @param userId the user id
+     * @param episodeId the episode id
+     */
     public record Ids(Long userId, Long episodeId){}
+    /**
+     * Create a new {@link UserEpisodeRatingRepository}
+     * @param jdbc depends on {@link JdbcTemplate}
+     * @param jdbcMap depends on {@link JdbcMappingContext}
+     */
     public UserEpisodeRatingRepository(
             final JdbcTemplate jdbc,
             final JdbcMappingContext jdbcMap

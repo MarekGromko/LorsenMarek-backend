@@ -11,9 +11,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserMediaHistoryService {
-    @Autowired
-    private JdbcTemplate jdbc;
-
+    final private JdbcTemplate jdbc;
+    /**
+     * Create a new {@link UserMediaHistoryService}
+     * @param jdbc depends on {@link JdbcTemplate}
+     */
+    public UserMediaHistoryService(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
     /**
      * Checks if a user has watched a given series.
      * @param userId the ID of the user.
