@@ -8,8 +8,20 @@ import org.springframework.lang.Nullable;
 
 import java.time.Instant;
 
+/**
+ * Converter that transform an {@link Instant} to a {@link String}
+ *
+ * @see InstantCodecUtil
+ */
 @WritingConverter
 public final class InstantWritingConverter implements Converter<Instant, String> {
+    /** Create a new {@link InstantWritingConverter} */
+    public InstantWritingConverter() {}
+    /**
+     * Convert  {@link Instant} to a {@link String}
+     *
+     * @param instant the instant to convert
+     * */
     @Override
     @NonNull
     public String convert(@NonNull Instant instant) {

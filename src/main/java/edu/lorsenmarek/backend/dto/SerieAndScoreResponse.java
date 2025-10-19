@@ -4,17 +4,16 @@ import edu.lorsenmarek.backend.model.Serie;
 
 /**
  * A response DTO which combine a {@link SerieSummaryResponse} with a score
- * <p><br>
- *     <b>Example:</b>
- *     <pre>{@code
- *      {
- *          "score": 5.0,
- *          "serie": {
- *              ... // SerieSummaryResponse
- *          }
+ * <br>
+ * <b>Example:</b>
+ * <pre>{@code
+ *  {
+ *      "score": 5.0,
+ *      "serie": {
+ *          ... // SerieSummaryResponse
  *      }
- *     }</pre>
- * </p>
+ *  }
+ * }</pre>
  *
  * @see SerieSummaryResponse
  * @see Serie

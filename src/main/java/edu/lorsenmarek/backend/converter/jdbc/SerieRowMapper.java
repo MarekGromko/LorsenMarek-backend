@@ -7,7 +7,15 @@ import org.springframework.lang.NonNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * {@link RowMapper} for {@link Serie}
+ *
+ * @see Serie
+ * @see RowMapper
+ */
 public class SerieRowMapper implements RowMapper<Serie> {
+    /** Create a new {@link SerieRowMapper} */
+    public SerieRowMapper() {}
     @Override
     @NonNull
     public Serie mapRow(ResultSet rs, int rowNum) throws SQLException {

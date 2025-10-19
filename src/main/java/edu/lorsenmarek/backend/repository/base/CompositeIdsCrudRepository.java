@@ -20,10 +20,28 @@ import java.util.stream.StreamSupport;
  * @author Marek Gromko
  */
 abstract public class CompositeIdsCrudRepository<T, CI> {
+    /**
+     * The data access is done through {@link JdbcTemplate}
+     */
     final protected JdbcTemplate jdbc;
+    /**
+     * Access with more ease the properties of class {@link T}
+     */
     final protected JdbcMappingContext jdbcMap;
+    /**
+     * The row mapper for the class {@link T}
+     */
     final protected RowMapper<T> rowMapper;
+    /**
+     * The class information for {@link T}
+     */
     final protected Class<?> tclass;
+    /**
+     * Create a new {@link CompositeIdsCrudRepository}
+     * @param jdbc depends on {@link JdbcTemplate}
+     * @param jdbcMap depends on {@link JdbcMappingContext}
+     * @param mapper depends on {@link RowMapper}
+     */
     protected CompositeIdsCrudRepository(
             final JdbcTemplate jdbc,
             final JdbcMappingContext jdbcMap,

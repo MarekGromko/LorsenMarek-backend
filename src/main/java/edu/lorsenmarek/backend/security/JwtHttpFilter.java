@@ -22,6 +22,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtHttpFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepo;
+
+    /**
+     * Create a new {@link JwtHttpFilter}
+     * @param jwtUtil depends on {@link JwtUtil}
+     * @param userRepo depends on {@link UserRepository}
+     */
     public JwtHttpFilter(JwtUtil jwtUtil, UserRepository userRepo) {
         this.jwtUtil = jwtUtil;
         this.userRepo = userRepo;

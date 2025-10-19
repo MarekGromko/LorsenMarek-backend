@@ -12,11 +12,20 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * Utility class to handle JWT
+ */
 @Component
 public class JwtUtil {
     final private String JWT_SECRET;
     final private Duration JWT_EXPIRATION;
     private SecretKey key;
+
+    /**
+     * Create a new {@link JwtUtil}
+     * @param jwtSecret depends on props <code>auth.jwt.secret</code>
+     * @param jwtExpiration depends on props <code>auth.jwt.expiration</code>
+     */
     JwtUtil(
             @Value("${auth.jwt.secret}") final String jwtSecret,
             @Value("${auth.jwt.expiration}") final String jwtExpiration
@@ -24,10 +33,17 @@ public class JwtUtil {
         JWT_SECRET = jwtSecret;
         JWT_EXPIRATION = DurationCodecUtil.decode(jwtExpiration);
     }
+    /** Initialize the secret key */
     @PostConstruct
     public void init(){
         this.key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
     }
+
+    /**
+     * Generate a new JWT given a subject
+     * @param subject the subject to pass in the JWT
+     * @return the computed JWT
+     */
     public String generateToken(String subject){
         return Jwts.builder()
                 .subject(subject)
@@ -36,6 +52,12 @@ public class JwtUtil {
                 .signWith(key)
                 .compact();
     }
+
+    /**
+     * Get the subject (sub) from a JWT
+     * @param raw_token the raw string JWT token
+     * @return the token's subject
+     */
     public String getSubjectFromToken(String raw_token){
         return Jwts.parser()
                 .verifyWith(key).build()
@@ -43,6 +65,11 @@ public class JwtUtil {
                 .getPayload()
                 .getSubject();
     }
+    /**
+     * Validate a JWT token
+     * @param token the token
+     * @return if the token is valid
+     */
     public boolean validateJwtToken(String token){
         try{
             Jwts.parser().verifyWith(key).build().parse(token);
