@@ -15,4 +15,4 @@ Checkout the wiki **Installation** page for more information!
 
 ## How to use
 
-You may run the application, checkout the test coverage & the javadoc reports, while siping some tea.
+You may run the application, checkout the test coverage & javadoc reports, while sipping some tea.
