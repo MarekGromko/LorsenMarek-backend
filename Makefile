@@ -83,6 +83,11 @@ once: --validate-all
 copy: --validate-all
 	$(docker_compose) cp ${dca}:${src} ${dst}
 
+reports: --validate-all
+	$(docker_compose) exec -T=false --interactive=false ${dca} \
+		mvn javadoc:javadoc \
+			jacoco:reports
+
 # CONTINUED INTEGRATION SETUP (JENKINS)
 ci-build: --validate-docker
 	docker build \
