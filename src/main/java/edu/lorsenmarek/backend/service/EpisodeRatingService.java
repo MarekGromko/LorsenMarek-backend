@@ -7,7 +7,6 @@ import edu.lorsenmarek.backend.exception.ResourceNotFoundException;
 import edu.lorsenmarek.backend.model.UserEpisodeRating;
 import edu.lorsenmarek.backend.repository.EpisodeRepository;
 import edu.lorsenmarek.backend.repository.UserEpisodeRatingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +25,29 @@ import static edu.lorsenmarek.backend.repository.UserEpisodeRatingRepository.*;
  */
 @Service
 public class EpisodeRatingService {
-    @Autowired
-    private JdbcTemplate jdbc;
-    @Autowired
-    private UserMediaHistoryService userMediaHistoryService;
-    @Autowired
-    private UserEpisodeRatingRepository userEpisodeRatingRepo;
-    @Autowired
-    private EpisodeRepository episodeRepo;
+    final private JdbcTemplate jdbc;
+    final private UserMediaHistoryService userMediaHistoryService;
+    final private UserEpisodeRatingRepository userEpisodeRatingRepo;
+    final private EpisodeRepository episodeRepo;
+
+    /**
+     * Create a new {@link EpisodeRatingService}
+     * @param jdbc depends on {@link JdbcTemplate}
+     * @param userMediaHistoryService depends on {@link UserMediaHistoryService}
+     * @param userEpisodeRatingRepo depends on {@link UserEpisodeRatingRepository}
+     * @param episodeRepo depends on {@link EpisodeRepository}
+     */
+    public EpisodeRatingService(
+            JdbcTemplate jdbc,
+            UserMediaHistoryService userMediaHistoryService,
+            UserEpisodeRatingRepository userEpisodeRatingRepo,
+            EpisodeRepository episodeRepo
+    ) {
+        this.jdbc = jdbc;
+        this.userMediaHistoryService = userMediaHistoryService;
+        this.userEpisodeRatingRepo = userEpisodeRatingRepo;
+        this.episodeRepo = episodeRepo;
+    }
 
     /**
      * Try to rate an episode

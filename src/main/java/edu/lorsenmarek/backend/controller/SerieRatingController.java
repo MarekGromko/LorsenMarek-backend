@@ -5,7 +5,6 @@ import edu.lorsenmarek.backend.exception.*;
 import edu.lorsenmarek.backend.model.User;
 import edu.lorsenmarek.backend.service.SerieRatingService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,32 +19,41 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequestMapping("/rating/serie")
 public class SerieRatingController {
-    @Autowired
-    SerieRatingService serieRatingService;
+    final private SerieRatingService serieRatingService;
+
+    /**
+     * Create a new {@link SerieRatingController}
+     * @param serieRatingService depends on {@link SerieRatingService}
+     */
+    public SerieRatingController(
+            SerieRatingService serieRatingService
+    ) {
+        this.serieRatingService = serieRatingService;
+    }
+
     /**
      * Get the mean rating (sum and count) for a given serie
-     * <p><br/>
-     *     <b>Example:</b>
-     *     <pre>{@code
-     *     // Request
-     *     GET /rating/serie/{id}
-     *     // Response
-     *     HTTP 200 Ok
-     *     {
-     *         "sum": 4, // sum of all ratings found
-     *         "count": 2 // number of ratings found
-     *     }
-     *     }</pre>
-     * </p>
+     * <br/>
+     * <b>Example:</b>
+     * <pre>{@code
+     *  // Request
+     *  GET /rating/serie/{id}
+     *  // Response
+     *  HTTP 200 Ok
+     *  {
+     *      "sum": 4, // sum of all ratings found
+     *      "count": 2 // number of ratings found
+     *  }
+     * }</pre>
      *
      * @param id the {@link edu.lorsenmarek.backend.model.Serie} id as a path variable
      * @return - Ok with {@link RatingResponse} for body
-     * <p>
-     *     - In case of error, this method may delegate to :
-     *     <ul>
-     *         <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
-     *     </ul>
-     * </p>
+     * <br/>
+     * - In case of error, this method may delegate to :
+     * <ul>
+     *     <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
+     * </ul>
+     *
      */
     @GetMapping("/{id}")
     public ResponseEntity<RatingResponse> getSerieRating(
@@ -58,30 +66,29 @@ public class SerieRatingController {
     /**
      * Add or modify a rating to a {@link edu.lorsenmarek.backend.model.Serie}
      * <p>User must be <b>authenticated</b></p>
-     * <p><br/>
-     *     <b>Example:</b>
-     *     <pre>{@code
-     *     // Request
-     *     PUT /rating/serie/{serieId}
-     *     {
-     *         "rating": 4 // the rating to put
-     *     }
-     *     // Response
-     *     HTTP 204 No Content
-     *     }</pre>
-     * </p>
+     * <br/>
+     * <b>Example:</b>
+     * <pre>{@code
+     *  // Request
+     *  PUT /rating/serie/{serieId}
+     *  {
+     *      "rating": 4 // the rating to put
+     *  }
+     *  // Response
+     *  HTTP 204 No Content
+     * }</pre>
      *
      * @param serieId the {@link edu.lorsenmarek.backend.model.Serie} id as a path variable
      * @param ratingReq the {@link RatingRequest} as the request body
      * @param auth the {@link edu.lorsenmarek.backend.security.token.DetailedAuthToken}
      * @return - No Content
-     * <p>
-     *     - In case of error, this method may delegate to :
-     *     <ul>
-     *         <li>{@link #ratingUnwatchedMedia()}</li>
-     *         <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
-     *     </ul>
-     * </p>
+     * <br/>
+     * - In case of error, this method may delegate to :
+     * <ul>
+     *     <li>{@link #ratingUnwatchedMedia()}</li>
+     *     <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
+     * </ul>
+     *
      */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
@@ -101,25 +108,25 @@ public class SerieRatingController {
     /**
      * Delete an episode rating
      * <p>User must be <b>authenticated</b></p>
-     * <p><br/>
-     *     <b>Example:</b>
-     *     <pre>{@code
-     *     // Request
-     *     DELETE /rating/serie/{episodeId}
-     *     // Response
-     *     HTTP 204 No Content
-     *     }</pre>
-     * </p>
+     * <br/>
+     * <b>Example:</b>
+     * <pre>{@code
+     *  // Request
+     *  DELETE /rating/serie/{episodeId}
+     *  // Response
+     *  HTTP 204 No Content
+     * }</pre>
+     *
      *
      * @param serieId the {@link edu.lorsenmarek.backend.model.Serie} as a path variable
      * @param auth the {@link edu.lorsenmarek.backend.security.token.DetailedAuthToken}
      * @return - No Content
-     * <p>
-     *     - In case of error, this method may delegate to :
-     *     <ul>
-     *         <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
-     *     </ul>
-     * </p>
+     * <br/>
+     * - In case of error, this method may delegate to :
+     * <ul>
+     *     <li>{@link #serieNotFound(ResourceNotFoundException)}</li>
+     * </ul>
+     *
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
@@ -139,16 +146,16 @@ public class SerieRatingController {
      * <p>Handle exception {@link RatingUnwatchedMediaException}</p>
      * <p>Code field is <b>{@code RatingUnwatchedMedia}</b></p>
      * <p><br/>
-     *     <b>Example:</b>
-     *     <pre>{@code
-     *     // Response
-     *     HTTP 403 Forbidden
-     *     {
-     *         "code": "RatingUnwatchedMedia",
-     *         "message": "Can't rate a serie that is not yet watched"
-     *     }
-     *     }</pre>
-     * </p>
+     * <b>Example:</b>
+     * <pre>{@code
+     *  // Response
+     *  HTTP 403 Forbidden
+     *  {
+     *      "code": "RatingUnwatchedMedia",
+     *      "message": "Can't rate a serie that is not yet watched"
+     *  }
+     * }</pre>
+     *
      *
      * @return Forbidden with {@link ErrorResponse} for body
      */
@@ -162,17 +169,17 @@ public class SerieRatingController {
      * Deferred to when a requested serie does not exist
      * <p>Handle exception {@link ResourceNotFoundException}</p>
      * <p>Code field is <b>{@code ResourceNotFound}</b></p>
-     * <p><br/>
-     *     <b>Example:</b>
-     *     <pre>{@code
-     *     // Response
-     *     HTTP 404 Not Found
-     *     {
-     *         "code": "ResourceNotFound",
-     *         "message": "Could not find serie {serieId}"
-     *     }
-     *     }</pre>
-     * </p>
+     * <br/>
+     * <b>Example:</b>
+     * <pre>{@code
+     *  // Response
+     *  HTTP 404 Not Found
+     *  {
+     *      "code": "ResourceNotFound",
+     *      "message": "Could not find serie {serieId}"
+     *  }
+     * }</pre>
+     *
      *
      * @param ex the {@link ResourceNotFoundException} caught
      * @return Forbidden with {@link ErrorResponse} for body

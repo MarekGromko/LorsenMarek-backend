@@ -36,11 +36,17 @@ public class TrendingSerieService {
     /**
      * Object holding both a {@link Serie} and its trending {@link #score()}
      *
-     * @param serie
-     * @param score
+     * @param serie the serie
+     * @param score its score
      */
     public record SerieTrendingScore(Serie serie, Double score) {}
+
+    /**
+     * {@link RowMapper} for {@link SerieTrendingScore}
+     */
     public static class SerieTrendingScoreRowMapper implements RowMapper<SerieTrendingScore> {
+        /** Create a new {@link SerieTrendingScoreRowMapper} */
+        public SerieTrendingScoreRowMapper() {}
         private final RowMapper<Serie> serieMapper = new SerieRowMapper();
         @Override
         @NonNull

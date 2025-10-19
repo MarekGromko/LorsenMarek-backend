@@ -6,7 +6,6 @@ import edu.lorsenmarek.backend.exception.*;
 import edu.lorsenmarek.backend.model.UserSerieRating;
 import edu.lorsenmarek.backend.repository.SerieRepository;
 import edu.lorsenmarek.backend.repository.UserSerieRatingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +19,30 @@ import java.time.Instant;
  */
 @Service
 public class SerieRatingService {
-    @Autowired
-    private JdbcTemplate jdbc;
-    @Autowired
-    private UserMediaHistoryService userMediaHistoryService;
-    @Autowired
-    private UserSerieRatingRepository userSerieRatingRepo;
-    @Autowired
-    private SerieRepository serieRepo;
+    final private JdbcTemplate jdbc;
+    final private UserMediaHistoryService userMediaHistoryService;
+    final private UserSerieRatingRepository userSerieRatingRepo;
+    final private SerieRepository serieRepo;
+
+    /**
+     * Create a new {@link SerieRatingService}
+     * @param jdbc depends on {@link JdbcTemplate}
+     * @param userMediaHistoryService depends on {@link UserMediaHistoryService}
+     * @param userSerieRatingRepo depends on {@link UserSerieRatingRepository}
+     * @param serieRepo depends on {@link SerieRepository}
+     */
+    public SerieRatingService(
+            JdbcTemplate jdbc,
+            UserMediaHistoryService userMediaHistoryService,
+            UserSerieRatingRepository userSerieRatingRepo,
+            SerieRepository serieRepo
+    ) {
+        this.jdbc = jdbc;
+        this.userMediaHistoryService = userMediaHistoryService;
+        this.userSerieRatingRepo = userSerieRatingRepo;
+        this.serieRepo = serieRepo;
+    }
+
 
     /**
      * Create or updates a rating for a given series by user.

@@ -13,6 +13,8 @@ import java.sql.SQLException;
  * @author Marek Gromko
  */
 public class UserEpisodeHistoryRowMapper implements RowMapper<UserEpisodeHistory> {
+    /** Create a new {@link UserEpisodeHistoryRowMapper} */
+    public UserEpisodeHistoryRowMapper() {}
     @Override
     @NonNull
     public UserEpisodeHistory mapRow(ResultSet rs, int rowNum) throws SQLException {

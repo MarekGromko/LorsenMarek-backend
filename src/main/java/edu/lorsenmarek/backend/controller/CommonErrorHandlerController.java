@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @ControllerAdvice
 public class CommonErrorHandlerController {
+    private CommonErrorHandlerController() {}
     /**
      * Handler for an empty request body when one is required
      *
