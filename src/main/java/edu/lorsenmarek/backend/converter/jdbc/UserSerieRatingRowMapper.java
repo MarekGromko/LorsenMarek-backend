@@ -15,6 +15,8 @@ import java.util.Optional;
  * @author Marek Gromko
  */
 public class UserSerieRatingRowMapper implements RowMapper<UserSerieRating> {
+    /** Create a new {@link UserSerieRatingRowMapper} */
+    public UserSerieRatingRowMapper() {}
     @Override
     @NonNull
     public UserSerieRating mapRow(ResultSet rs, int rowNum) throws SQLException {

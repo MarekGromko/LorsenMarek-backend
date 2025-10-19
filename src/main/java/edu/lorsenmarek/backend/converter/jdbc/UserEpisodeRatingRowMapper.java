@@ -15,6 +15,8 @@ import java.util.Optional;
  * @author Marek Gromko
  */
 public class UserEpisodeRatingRowMapper implements RowMapper<UserEpisodeRating> {
+    /** Create a new {@link UserEpisodeRatingRowMapper} */
+    public UserEpisodeRatingRowMapper() {}
     @Override
     @NonNull
     public UserEpisodeRating mapRow(ResultSet rs, int rowNum) throws SQLException {

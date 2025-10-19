@@ -10,9 +10,10 @@ import java.time.Instant;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class UserEpisodeRating {
+    /** Create a new {@link UserEpisodeRating} */
+    public UserEpisodeRating() {}
     @CompositeId
     private Long userId;
     @CompositeId

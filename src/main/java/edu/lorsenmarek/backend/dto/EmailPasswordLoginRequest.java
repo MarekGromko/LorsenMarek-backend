@@ -1,3 +1,10 @@
 package edu.lorsenmarek.backend.dto;
 
-public record EmailPasswordLoginRequest(String email, String password) {}
+/**
+ * DTO Request to login with an email and a password
+ * @param email the email
+ * @param password the password
+ */
+public record EmailPasswordLoginRequest(
+        String email,
+        String password) {}

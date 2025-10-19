@@ -10,9 +10,10 @@ import java.time.Instant;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Episode {
+    /** Create a new {@link Episode} */
+    public Episode(){}
     @Id
     private Long id;
     private Long serieId;

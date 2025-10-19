@@ -9,7 +9,9 @@ import java.util.Collections;
  * @version 1.0
  */
 public class EmailPasswordAuthToken extends AbstractAuthenticationToken {
+    /** The user email*/
     final private String email;
+    /** The user password */
     final private String password;
 
     /**
